@@ -1,0 +1,39 @@
+.headerButton {
+  margin: 5px;
+  color: black;
+  border-radius: 50px;
+}
+.headerButton:hover {
+  background-color: #f3f3f3;
+  color: black;
+  border-radius: 50px;
+}
+
+.headerSearchBox {
+  width: 200px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 15px;
+  margin: 5px;
+  color: gray;
+}
+.headerSearchBox:hover {
+  color: lightgray;
+}
+
+.drawer {
+  width: 15em;
+  margin-top: auto;
+}
+
+.drawer-text {
+  font-size: x-large;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.footer {
+  font-size: small;
+}
