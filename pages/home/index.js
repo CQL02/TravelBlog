@@ -1,5 +1,10 @@
-import Example from "../../component/example";
+import Layout from "../../component/Layout";
+import { Typography } from "@mui/material";
 
 export default function homeindex() {
-  return <Example />;
+  return (
+    <Layout>
+      <Typography>Hi testing Home page!</Typography>
+    </Layout>
+  );
 }
