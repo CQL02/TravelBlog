@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import Layout from "../../component/Layout";
+import Link from "next/link";
 
 const countriesList = [
   { name: "Antarctica", image: "/Antarctica.png" },
@@ -15,10 +16,15 @@ export default function country() {
   return (
     <Layout>
       {countriesList.map((data) => (
-        <Box className="country-box" key={data.name}>
-          <img src={data.image} width="150" alt={data.name} />
-          <Typography className="country-text">{data.name}</Typography>
-        </Box>
+        <Link
+          href={`/country/searchcountry?country=${data.name}`}
+          key={data.id}
+        >
+          <Box className="country-box" key={data.name}>
+            <img src={data.image} width="150" alt={data.name} />
+            <Typography className="country-text">{data.name}</Typography>
+          </Box>
+        </Link>
       ))}
     </Layout>
   );
