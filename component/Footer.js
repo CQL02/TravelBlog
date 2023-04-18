@@ -3,7 +3,7 @@ import CopyrightIcon from "@mui/icons-material/Copyright";
 
 export default function footer() {
   return (
-    <Box>
+    <Box className="footer-box">
       <Divider />
       <Typography align="center" className="footer">
         Copyright <CopyrightIcon className="footer" /> TRAVEL NOW. All Rights

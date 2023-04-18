@@ -1,0 +1,28 @@
+.country-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 300px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.country-text {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  color: rgb(0, 0, 0);
+  width: 300px;
+  background: linear-gradient(to bottom, transparent, rgb(151, 151, 151))
+    rgba(107, 107, 107, 0);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  justify-content: center;
+}
