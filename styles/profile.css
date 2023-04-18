@@ -1,0 +1,56 @@
+.title {
+    font-family: "Open Sans", Arial, sans-serif;
+    font-weight: 550;
+    font-size: 16px;
+    color: #AAA8A8;
+    padding-top: 6px;
+}
+
+.profileDetails {
+    font-family: "Open Sans", Arial, sans-serif;
+    font-weight: 50;
+    font-size: 16px;
+    color: #000000
+}
+
+.menuIcons {
+    color: black;
+}
+
+.side {
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+.input {
+    border: 1px solid #939393;
+    border-radius: 15px;
+    text-align: center;
+}
+
+#uploadProfile {
+    background-color: #ffffff;
+    color: black;
+    height: 40px;
+    width: 40px;
+    margin-left: -44px;
+    margin-top: 4px;
+}
+
+#uploadProfile:hover {
+    background-color: #F5F5F5;
+    color: black;
+}
+
+#saveButton {
+    background-color: #D5CAAE;
+    color: #000000;
+    width: 100px;
+    border-radius: 30px;
+    float: right;
+    margin-right: 15px;
+}
+
+#saveButton:hover {
+    background-color: #bcb197;
+}
