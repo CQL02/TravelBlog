@@ -42,7 +42,7 @@
     "title": "travel to Japan",
     "image": "ali",
     "date": "18-4-2023",
-    "country": "Asia",
+    "country": "Europe",
     "like": 243,
     "view": 500,
     "rating": 2.9
@@ -54,7 +54,7 @@
     "title": "travel to Japan",
     "image": "ali",
     "date": "18-4-2023",
-    "country": "Asia",
+    "country": "Europe",
     "like": 243,
     "view": 500,
     "rating": 2.9
@@ -64,7 +64,7 @@
     "username": "alibinabu",
     "userImage": "ali",
     "title": "travel to Japan",
-    "image": "ali",
+    "image": "Africa",
     "date": "18-4-2023",
     "country": "Asia",
     "like": 243,
@@ -74,7 +74,7 @@
   {
     "id": 7,
     "username": "alibinabu",
-    "userImage": "ali",
+    "userImage": "Africa",
     "title": "travel to Japan",
     "image": "ali",
     "date": "18-4-2023",
@@ -86,7 +86,7 @@
   {
     "id": 8,
     "username": "alibinabu",
-    "userImage": "ali",
+    "userImage": "Europe",
     "title": "travel to Japan",
     "image": "ali",
     "date": "18-4-2023",
@@ -114,7 +114,7 @@
     "title": "travel to Japan",
     "image": "ali",
     "date": "18-4-2023",
-    "country": "Asia",
+    "country": "North America",
     "like": 243,
     "view": 500,
     "rating": 2.9
