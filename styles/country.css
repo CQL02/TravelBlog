@@ -32,7 +32,9 @@
 .search-country-box {
   display: flex;
   flex-direction: row;
-  padding: 3px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
 }
 .search-country-box:hover {
   background-color: rgb(245, 245, 245);

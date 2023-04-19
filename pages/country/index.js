@@ -18,7 +18,7 @@ export default function country() {
       {countriesList.map((data) => (
         <Link
           href={`/country/searchcountry?country=${data.name}`}
-          key={data.id}
+          key={data.name}
         >
           <Box className="country-box" key={data.name}>
             <img src={data.image} width="150" alt={data.name} />

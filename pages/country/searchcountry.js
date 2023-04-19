@@ -1,14 +1,11 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Layout from "../../component/Layout";
 import axios from "axios";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import StarRateIcon from "@mui/icons-material/StarRate";
-import PersonIcon from "@mui/icons-material/Person";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
+import BlogListView from "@/component/BlogListView";
 
 export default function searchcountry() {
   const router = useRouter();
@@ -46,46 +43,17 @@ export default function searchcountry() {
         {country}
       </Typography>
       {filteredData.map((data) => (
-        <Box className="search-country-box" key={data.id}>
-          <img
-            src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
-            style={{ width: "250px", height: "141px" }}
-          />
-          <Box key={data.id}>
-            <Typography className="search-country-country-text">
-              {data.country}
-            </Typography>
-
-            <Typography className="search-country-title-text">
-              {data.title}
-            </Typography>
-
-            <Box className="search-country-helper-text-box">
-              <Typography className="search-country-helper-text">
-                <PersonIcon className="search-country-icon" />
-                {data.username}
-              </Typography>
-              <Typography className="search-country-helper-text">
-                {data.date}
-              </Typography>
-            </Box>
-
-            <Box className="search-country-helper-text-box">
-              <Typography className="search-country-helper-text">
-                <FavoriteIcon className="search-country-icon" />
-                {data.like + "\t"}
-              </Typography>
-              <Typography className="search-country-helper-text">
-                <RemoveRedEyeIcon className="search-country-icon" />
-                {data.view + " "}
-              </Typography>
-              <Typography className="search-country-helper-text">
-                <StarRateIcon className="search-country-icon" />
-                {data.rating + " "}
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
+        <BlogListView
+          key={data.id}
+          image={data.image}
+          country={data.country}
+          title={data.title}
+          username={data.username}
+          date={data.date}
+          like={data.like}
+          view={data.view}
+          rating={data.rating}
+        />
       ))}
     </Layout>
   );
