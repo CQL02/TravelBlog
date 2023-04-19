@@ -20,7 +20,7 @@
     "date": "20-4-2023",
     "country": "Asia",
     "like": 243,
-    "view": 500,
+    "view": 50,
     "rating": 2.9
   },
   {
@@ -32,7 +32,7 @@
     "date": "18-4-2023",
     "country": "Asia",
     "like": 243,
-    "view": 500,
+    "view": 200,
     "rating": 2.9
   },
   {
@@ -56,7 +56,7 @@
     "date": "18-4-2023",
     "country": "Europe",
     "like": 243,
-    "view": 500,
+    "view": 1500,
     "rating": 2.9
   },
   {
@@ -116,7 +116,7 @@
     "date": "18-4-2023",
     "country": "North America",
     "like": 243,
-    "view": 500,
+    "view": 5200,
     "rating": 2.9
   }
 ]
