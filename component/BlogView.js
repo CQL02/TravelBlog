@@ -52,7 +52,11 @@ export default function blogview(props) {
         }}
       />
 
-      <Typography className="view-blog-description" align="justify">
+      <Typography
+        className="view-blog-description"
+        align="justify"
+        sx={{ mt: "10px" }}
+      >
         {description}
       </Typography>
     </Box>

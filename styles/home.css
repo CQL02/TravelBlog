@@ -60,7 +60,6 @@
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 20px;
 }
 
 .view-blog-like-view-box {
@@ -70,4 +69,81 @@
   margin-left: auto;
   margin-right: auto;
   justify-content: right;
+}
+
+.comment-parent-box {
+  border-radius: 20px;
+  background-color: rgb(241, 241, 241);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+}
+
+.comment-profile-box {
+  display: flex;
+  flex-direction: row;
+  padding-left: 15px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.comment-profile-box-2 {
+  display: flex;
+  flex-direction: row;
+}
+
+.comment-profile-text-box {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+}
+
+.comment-profile-username-text {
+  margin-right: 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.comment-content {
+  font-size: 12px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+}
+
+.comment-profile-helper-text {
+  display: flex;
+  flex-direction: row;
+  font-size: 10px;
+  color: gray;
+  margin-right: 20px;
+}
+
+.comment-profile-icon {
+  font-size: 15px;
+  color: black;
+  margin-right: 5px;
+}
+
+.comment-profile-description {
+  font-size: 12px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+}
+.comment-profile-button {
+  color: black;
+  border-radius: 50px;
+  background-color: #d5caae;
+  display: flex;
+  margin-left: auto;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+.comment-profile-button:hover {
+  background-color: #b1a076;
+  color: black;
+  border-radius: 50px;
 }
