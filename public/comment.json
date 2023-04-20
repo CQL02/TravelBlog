@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "username": "alibinabu",
+    "profileImage": "image",
+    "date": "20/4/2023",
+    "rating": "3.5",
+    "comment": "ajhsvdghjaczvxjvAcasjhcgasjhdfasukcgajscvaksujduyasjgd. akahcioaca suoic aOc haIucga oia houas usa haskao hsoi osdh osd."
+  },
+  {
+    "id": 2,
+    "username": "John",
+    "profileImage": "image",
+    "date": "21/4/2023",
+    "rating": "2.5",
+    "comment": "ajhsvdghjaczvxjvAcasjhcgasjhdfasukcgajscvaksujduyasjgd. akahcioaca suoic aOc haIucga oia houas usa haskao hsoi osdh osd."
+  },
+  {
+    "id": 3,
+    "username": "Marry",
+    "profileImage": "image",
+    "date": "25/4/2023",
+    "rating": "3.0",
+    "comment": "ajhsvdghjaczvxjvAcasjhcgasjhdfasukcgajscvaksujduyasjgd. akahcioaca suoic aOc haIucga oia houas usa haskao hsoi osdh osd."
+  },
+  {
+    "id": 4,
+    "username": "Ahmad",
+    "profileImage": "image",
+    "date": "29/4/2023",
+    "rating": "4.0",
+    "comment": "ajhsvdghjaczvxjvAcasjhcgasjhdfasukcgajscvaksujduyasjgd. akahcioaca suoic aOc haIucga oia houas usa haskao hsoi osdh osd."
+  }
+]
