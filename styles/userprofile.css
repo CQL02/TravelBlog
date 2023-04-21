@@ -1,0 +1,33 @@
+.title-personal-details{
+    color: gray;
+}
+
+.details{
+    display: flex; 
+    align-items: center;
+}
+
+.title{
+    flex: 1;
+    color: black;
+}
+
+.description{
+    margin-left: 100px; 
+}
+
+.blogpic{
+    width: 200px;
+    height: 200px;
+}
+
+.userprofilepic{
+    width: 200px; 
+    height: 200px;
+}
+
+.blogoverview{
+    width: 100px;
+    height: 100px;
+    margin-left: 20px;
+}
