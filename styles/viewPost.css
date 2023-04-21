@@ -1,0 +1,21 @@
+.avatar-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.username{
+    font-family: "Open Sans", Arial, sans-serif;
+    text-align: center;
+}
+
+.description{
+    font-family: "Open Sans", Arial, sans-serif;
+    text-align: center;
+
+}
+
+.editicon{
+    color: black;
+    border-radius: 50px;
+}

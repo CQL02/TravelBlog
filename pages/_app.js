@@ -7,6 +7,7 @@ import "@/styles/create.css";
 import "@/styles/profile.css";
 import "@/styles/changepassword.css";
 import "@/styles/feedback.css";
+import "@/styles/viewPosts.css"
 
 export default function App({ Component, pageProps }) {
   return <Component {...pageProps} />;
