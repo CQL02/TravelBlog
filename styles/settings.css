@@ -1,0 +1,213 @@
+#profileImage {
+    max-width: 210px;
+    max-height: 210px;
+}
+
+.navigationButton {
+    color: black;
+    justify-content: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 10px;
+}
+
+.navigationButton:disabled {
+    color: black;
+    background-color: #d8d8d8;
+}
+
+#profileBox {
+    display: flex;
+}
+
+
+.profileDetailsBox {
+    margin-top: 8px;
+}
+
+.detailsInput {
+    border: 1px solid #939393;
+    border-radius: 15px;
+    text-align: left;
+    padding-left: 15px;
+    padding-right: 15px;
+    min-width: 100px;
+}
+
+.details {
+    width: 100px;
+    min-width: fit-content;
+    max-width: 120px;
+}
+
+#profileDetailContainerBox {
+    margin-left: 20px;
+}
+
+#rightBox {
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.title {
+    font-family: "Open Sans", Arial, sans-serif;
+    font-weight: 550;
+    font-size: 14px;
+    color: #AAA8A8;
+    padding-top: 6px;
+}
+
+.profileDetails {
+    font-family: "Open Sans", Arial, sans-serif;
+    font-weight: 50;
+    font-size: 14px;
+    color: #000000;
+    margin-left: 25px;
+}
+
+.contactDetails {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.travelDetails {
+    font-size: 13px;
+}
+
+.menuIcons {
+    color: black;
+}
+
+.side {
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+
+.input {
+    border: 1px solid #939393;
+    border-radius: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: left;
+    flex: 0;
+}
+
+.aboutDetailsBox {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#menuList {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+#aboutBox {
+    margin-top: 15px;
+}
+
+#uploadProfile {
+    position: absolute;
+    background-color: #ffffff;
+    color: black;
+    max-height: 40px;
+    max-width: 40px;
+    margin-top: 4px;
+    top: 0;
+    right: 0;
+}
+
+#uploadProfile:hover {
+    background-color: #F5F5F5;
+    color: black;
+}
+
+#saveButton {
+    display: flex;
+    background-color: #D5CAAE;
+    color: #000000;
+    max-width: 100px;
+    border-radius: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: auto;
+}
+
+#saveButton:hover {
+    background-color: #bcb197;
+}
+
+/* Change password  */
+.password {
+    border: 1px solid #939393;
+    border-radius: 15px;
+    text-align: left;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.passwordLabel {
+    margin-left: 0px;
+}
+
+#passwordBox {
+    margin-top: 15px;
+    margin-left: 20px;
+
+}
+
+.detailsInput:disabled {
+    background-color: #EFECEC;
+}
+
+/* Feedback */
+#feedbackBox {
+    margin-left: 30px;
+}
+
+#emailInput {
+    border: 1px solid #939393;
+    background-color: #EFECEC;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 15px;
+    text-align: left;
+}
+
+#textarea {
+    border: 1px solid #939393;
+    background-color: #EFECEC;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 15px;
+    resize: none;
+}
+
+#contactUs {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+#emailTitle, #problemTitle {
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 16px;
+    color: black;
+    padding-top: 6px;
+}
+
+#submitButton {
+    background-color: #D5CAAE;
+    color: #000000;
+    max-width: 100px;
+    border-radius: 30px;
+    margin-top: 10px;
+}
+
+#submitButton:hover {
+    background-color: #bcb197;
+}
+
+
+

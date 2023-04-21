@@ -3,10 +3,7 @@ import "@/styles/layout.css";
 import "@/styles/country.css";
 import "@/styles/home.css";
 import "@/styles/create.css";
-
-import "@/styles/profile.css";
-import "@/styles/changepassword.css";
-import "@/styles/feedback.css";
+import "@/styles/settings.css";
 import "@/styles/viewPost.css";
 
 export default function App({ Component, pageProps }) {
