@@ -2,7 +2,6 @@ import Head from "next/head";
 import PersonIcon from "@mui/icons-material/Person";
 import HttpsIcon from "@mui/icons-material/Https";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EmailIcon from "@mui/icons-material/Email";
 
