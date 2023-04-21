@@ -1,21 +1,57 @@
-.avatar-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.username{
-    font-family: "Open Sans", Arial, sans-serif;
-    text-align: center;
+.username {
+  font-family: "Open Sans", Arial, sans-serif;
+  text-align: center;
 }
 
-.description{
-    font-family: "Open Sans", Arial, sans-serif;
-    text-align: center;
-
+.description {
+  font-family: "Open Sans", Arial, sans-serif;
+  text-align: center;
 }
 
-.editicon{
-    color: black;
-    border-radius: 50px;
+.editicon {
+  color: black;
+  border-radius: 50px;
+}
+
+.icon-button-icon {
+  font-size: 18px;
+}
+.icon-button-box {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 10px;
+}
+
+.delete-button-yes {
+  background: red;
+  color: white;
+  margin-right: 4px;
+  cursor: "pointer";
+  border-radius: 5px;
+  padding: 5px;
+  width: 50px;
+  margin: 5px;
+}
+.delete-button-yes:hover {
+  background-color: rgb(153, 16, 16);
+}
+
+.delete-button-no {
+  background: lightgray;
+  color: black;
+  margin-right: 4px;
+  cursor: "pointer";
+  border-radius: 5px;
+  padding: 5px;
+  width: 50px;
+  margin: 5px;
+}
+.delete-button-no:hover {
+  background-color: rgb(160, 160, 160);
 }

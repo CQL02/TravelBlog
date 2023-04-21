@@ -1,16 +1,24 @@
-import { Typography, Box, Avatar } from "@mui/material";
+import { Typography, Box, Avatar, Button } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import { useRouter } from "next/router";
+import { ArrowBack } from "@mui/icons-material";
 
 export default function blogview(props) {
   const { id, image, title, username, date, like, view, rating, description } =
     props;
 
+  const router = useRouter();
   return (
     <Box>
-      <Typography className="view-blog-title" align="center">
-        {title}
-      </Typography>
+      <Box className="w-[600px] ml-auto mr-auto flex">
+        <Button className="headerButton absolute" onClick={() => router.back()}>
+          <ArrowBack />
+          BACK
+        </Button>
+
+        <Typography className="view-blog-title">{title}</Typography>
+      </Box>
 
       <Box className="view-blog-profile-box">
         <Avatar src="https://img.freepik.com/premium-photo/handsome-young-businessman-shirt-eyeglasses_85574-6228.jpg" />
