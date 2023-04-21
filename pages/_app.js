@@ -3,7 +3,6 @@ import "@/styles/layout.css";
 import "@/styles/country.css";
 import "@/styles/home.css";
 import "@/styles/create.css";
-
 import "@/styles/settings.css";
 import "@/styles/viewPost.css";
 

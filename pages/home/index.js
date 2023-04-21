@@ -7,6 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import PersonIcon from "@mui/icons-material/Person";
+import Link from "next/link";
 
 export default function homeindex() {
   const [data, setData] = useState([]);
@@ -43,53 +44,60 @@ export default function homeindex() {
     <Layout>
       <Typography className="home-title-text">Popular Blogs</Typography>
       {topView && (
-        <Box className="home-popular-box">
-          <img
-            src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
-            style={{ width: "700px", maxHeight: "394px", borderRadius: "10px" }}
-          />
-          <Box key={topView.id}>
-            <Box className="home-popular-helper-text-box">
-              <Typography className="home-popular-country">
-                {topView.country}
-              </Typography>
-              <Typography className="search-country-helper-text">
-                {topView.date}
-              </Typography>
-            </Box>
+        <Link href={`/home/view?id=${topView.id}`}>
+          <Box className="home-popular-box">
+            <img
+              src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+              style={{
+                width: "700px",
+                maxHeight: "394px",
+                borderRadius: "10px",
+              }}
+            />
+            <Box key={topView.id}>
+              <Box className="home-popular-helper-text-box">
+                <Typography className="home-popular-country">
+                  {topView.country}
+                </Typography>
+                <Typography className="search-country-helper-text">
+                  {topView.date}
+                </Typography>
+              </Box>
 
-            <Typography className="home-popular-title-text">
-              {topView.title}
-            </Typography>
-
-            <Box className="home-popular-helper-text-box">
-              <Typography className="search-country-helper-text">
-                <PersonIcon className="search-country-icon" />
-                {topView.username}
+              <Typography className="home-popular-title-text">
+                {topView.title}
               </Typography>
-              <Box className="search-country-helper-text-box">
+
+              <Box className="home-popular-helper-text-box">
                 <Typography className="search-country-helper-text">
-                  <FavoriteIcon className="search-country-icon" />
-                  {topView.like + "\t"}
+                  <PersonIcon className="search-country-icon" />
+                  {topView.username}
                 </Typography>
-                <Typography className="search-country-helper-text">
-                  <RemoveRedEyeIcon className="search-country-icon" />
-                  {topView.view + " "}
-                </Typography>
-                <Typography className="search-country-helper-text">
-                  <StarRateIcon className="search-country-icon" />
-                  {topView.rating + " "}
-                </Typography>
+                <Box className="search-country-helper-text-box">
+                  <Typography className="search-country-helper-text">
+                    <FavoriteIcon className="search-country-icon" />
+                    {topView.like + "\t"}
+                  </Typography>
+                  <Typography className="search-country-helper-text">
+                    <RemoveRedEyeIcon className="search-country-icon" />
+                    {topView.view + " "}
+                  </Typography>
+                  <Typography className="search-country-helper-text">
+                    <StarRateIcon className="search-country-icon" />
+                    {topView.rating + " "}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           </Box>
-        </Box>
+        </Link>
       )}
 
       <Typography className="home-title-text">Recommandation</Typography>
       {sorted.map((data) => (
         <BlogListView
           key={data.id}
+          id={data.id}
           image={data.image}
           country={data.country}
           title={data.title}

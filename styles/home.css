@@ -39,6 +39,8 @@
 .view-blog-title {
   font-size: 50px;
   font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .view-blog-profile-box {

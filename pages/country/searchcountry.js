@@ -45,6 +45,7 @@ export default function searchcountry() {
       {filteredData.map((data) => (
         <BlogListView
           key={data.id}
+          id={data.id}
           image={data.image}
           country={data.country}
           title={data.title}

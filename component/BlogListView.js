@@ -1,49 +1,114 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import PersonIcon from "@mui/icons-material/Person";
+import { DeleteOutline, EditOutlined } from "@mui/icons-material";
+import { useState, useRef } from "react";
+import Dialog from "@/component/deleteModal";
+import Link from "next/link";
 
 export default function bloglistview(props) {
-  const { id, image, country, title, username, date, like, view, rating } =
-    props;
+  const {
+    id,
+    image,
+    country,
+    title,
+    username,
+    date,
+    like,
+    view,
+    rating,
+    description,
+    isOwn,
+    onDelete,
+  } = props;
+
+  const [dialog, setDialog] = useState({
+    message: "",
+    isLoading: false,
+  });
+
+  const handleDelete = () => {
+    idProductRef.current = id;
+    handleDialog("Are you sure you want to delete this post?", true);
+  };
+
+  const handleDialog = (message, isLoading) => {
+    setDialog({
+      message,
+      isLoading,
+    });
+  };
+
+  const idProductRef = useRef();
+  const areUSureDelete = (choose) => {
+    if (choose) {
+      //suppose to call api
+      onDelete();
+      handleDialog("", false);
+    } else {
+      handleDialog("", false);
+    }
+  };
 
   return (
-    <Box className="search-country-box" key={id}>
-      <img
-        src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
-        style={{ width: "250px", height: "141px", borderRadius: "10px" }}
-      />
-      <Box key={id}>
-        <Typography className="search-country-country-text">
-          {country}
-        </Typography>
+    <Link href={`/home/view?id=${id}`}>
+      <Box className="search-country-box" key={id}>
+        <img
+          src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+          style={{ width: "250px", height: "141px", borderRadius: "10px" }}
+        />
+        <Box key={id}>
+          <Box className="flex">
+            <Typography className="search-country-country-text">
+              {country}
+            </Typography>
+            {isOwn ? (
+              <Box className="icon-button-box">
+                <IconButton size="small">
+                  <EditOutlined className="icon-button-icon" />
+                </IconButton>
+                <IconButton size="small" onClick={() => handleDelete()}>
+                  <DeleteOutline className="icon-button-icon" />
+                </IconButton>
+              </Box>
+            ) : (
+              <></>
+            )}
+          </Box>
 
-        <Typography className="search-country-title-text">{title}</Typography>
+          <Typography className="search-country-title-text">{title}</Typography>
 
-        <Box className="search-country-helper-text-box">
-          <Typography className="search-country-helper-text">
-            <PersonIcon className="search-country-icon" />
-            {username}
-          </Typography>
-          <Typography className="search-country-helper-text">{date}</Typography>
+          <Box className="search-country-helper-text-box">
+            <Typography className="search-country-helper-text">
+              <PersonIcon className="search-country-icon" />
+              {username}
+            </Typography>
+            <Typography className="search-country-helper-text">
+              {date}
+            </Typography>
+          </Box>
+
+          <Box className="search-country-helper-text-box">
+            <Typography className="search-country-helper-text">
+              <FavoriteIcon className="search-country-icon" />
+              {like + "\t"}
+            </Typography>
+            <Typography className="search-country-helper-text">
+              <RemoveRedEyeIcon className="search-country-icon" />
+              {view + " "}
+            </Typography>
+            <Typography className="search-country-helper-text">
+              <StarRateIcon className="search-country-icon" />
+              {rating + " "}
+            </Typography>
+          </Box>
         </Box>
-
-        <Box className="search-country-helper-text-box">
-          <Typography className="search-country-helper-text">
-            <FavoriteIcon className="search-country-icon" />
-            {like + "\t"}
-          </Typography>
-          <Typography className="search-country-helper-text">
-            <RemoveRedEyeIcon className="search-country-icon" />
-            {view + " "}
-          </Typography>
-          <Typography className="search-country-helper-text">
-            <StarRateIcon className="search-country-icon" />
-            {rating + " "}
-          </Typography>
-        </Box>
+        {dialog.isLoading && (
+          <Dialog onDialog={areUSureDelete} message={dialog.message} />
+        )}
       </Box>
-    </Box>
+    </Link>
   );
 }
