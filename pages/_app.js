@@ -5,7 +5,7 @@ import "@/styles/home.css";
 import "@/styles/create.css";
 
 import "@/styles/settings.css";
-import "@/styles/viewPosts.css";
+import "@/styles/viewPost.css";
 
 export default function App({ Component, pageProps }) {
   return <Component {...pageProps} />;
