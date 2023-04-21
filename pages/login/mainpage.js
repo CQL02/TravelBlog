@@ -1,8 +1,8 @@
 import Head from "next/head";
 import PersonIcon from "@mui/icons-material/Person";
 import HttpsIcon from "@mui/icons-material/Https";
-import LanguageIcon from "@mui/icons-material/Language";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 export default function MainPage() {
   return (
@@ -13,15 +13,20 @@ export default function MainPage() {
       </Head>
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <div className="text-centre font-bold text-5xl">TRAVEL NOW</div>
-        <div className="text-centre font-bold text-2xl">LOGIN</div>
-        <LanguageIcon className="m-2" />
-        <a href="#" className="m-2">
-          Need help?
-        </a>
-        <div className="rounded-2xl shadow-2xl flex w-2/3 max-w-4xl bg-blue-200">
-          <div className="flex flex-col items-center mb-3">
-            <div className="rounded-2xl bg-gray-100 w-64 p-2 flex justify-centre">
+        <div className="text-centre font-medium text-5xl font-sans py-8">TRAVEL NOW</div>
+
+
+        <div className="text-centre font-normal text-2xl basic-1/2">LOGIN</div>
+        <div className="inline-block align-right text-right text-sky-900	">
+          <HelpOutlineIcon className=""/>
+          <a href="#" className="m-2 text-s text-right">
+            Need help?
+          </a>
+        </div>
+      
+        <div className="rounded-2xl shadow-2xl flex w-full md:w-auto bg-blue-200">
+          <div className="flex flex-col items-center m-8">
+            <div className="rounded-2xl bg-gray-100 w-96 p-2 flex justify-centre">
               <PersonIcon className="m-2 " />
               <input
                 type="Username"
@@ -31,8 +36,8 @@ export default function MainPage() {
               />
             </div>
 
-            <div className="flex flex-col items-center mb-3">
-              <div className="bg-gray-100 w-64 p-2 flex items-center rounded-2xl">
+            <div className="flex flex-col items-center m-8">
+              <div className="bg-gray-100 w-96 p-2 flex items-center rounded-2xl">
                 <HttpsIcon className="m-2 " />
                 <input
                   type="Password"
@@ -47,24 +52,23 @@ export default function MainPage() {
             <div>
               <a
                 href="#"
-                className="rounded-full inline-block font-bold bg-gray-100 w-64 p-2 flex items-center"
+                className="bg-gray-100 w-96 p-2 flex rounded-2xl font-bold justify-center"
               >
-                Login
+                LOG IN
               </a>
             </div>
           </div>
         </div>
 
-        <div className="flex justify-between mb-5">
-          <label className="flex items-center text-xs">
-            Do not have an account?
-          </label>
-          <a href="#" className="text-xs">
-            Create an account
-          </a>
-          <a href="#" className="text-xs">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center text-xs mt-4 flex justify-start">
+            Do not have an account?<span className="text-xs mt-4 text-sky-900">Create an account</span>
+          </div>
+          <div>
+          <a href="#" className="text-xs mt-4 text-sky-900	">
             Forgot Password?
           </a>
+          </div>
         </div>
       </main>
     </div>
