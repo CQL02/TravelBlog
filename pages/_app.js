@@ -5,6 +5,8 @@ import "@/styles/home.css";
 import "@/styles/create.css";
 import "@/styles/settings.css";
 import "@/styles/viewPost.css";
+import "@/styles/userprofile.css";
+
 
 export default function App({ Component, pageProps }) {
   return <Component {...pageProps} />;
