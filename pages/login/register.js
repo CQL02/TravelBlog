@@ -2,6 +2,7 @@ import Head from "next/head";
 import PersonIcon from "@mui/icons-material/Person";
 import HttpsIcon from "@mui/icons-material/Https";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EmailIcon from "@mui/icons-material/Email";
 
@@ -26,6 +27,7 @@ export default function RegisterAccount() {
         <div className="rounded-2xl shadow-2xl flex w-full md:w-auto bg-blue-200 h-96">
           <div className="flex flex-col items-center m-5">
             <div className="rounded-2xl bg-gray-100 w-96 p-2 flex justify-centre">
+
               <PersonIcon className="m-2 " />
               <input
                 type="Username"
