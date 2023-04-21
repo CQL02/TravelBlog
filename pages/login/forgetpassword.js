@@ -1,7 +1,8 @@
 import Head from "next/head";
 import EmailIcon from "@mui/icons-material/Email";
 import HttpsIcon from "@mui/icons-material/Https";
-import LanguageIcon from "@mui/icons-material/Language";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
 
 export default function ForgetPasswordPage() {
   return (
@@ -12,15 +13,20 @@ export default function ForgetPasswordPage() {
       </Head>
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <div className="text-centre font-bold text-5xl">TRAVEL NOW</div>
-        <p className="text-centre text-2xl">FORGET PASSWORD</p>
-        <LanguageIcon className="m-2" />
-        <a href="#" className="m-2">
-          Need help?
-        </a>
-        <div className="rounded-2xl shadow-2xl bg-blue-200 flex w-2/3 max-w-4xl">
-          <div className="flex flex-col items-center mb-3">
-            <div className="rounded-2xl bg-gray-100 w-64 p-2 flex justify-centre">
+        <div className="text-centre font-medium text-5xl font-sans py-8">TRAVEL NOW</div>
+        <div>
+        <p className="text-centre font-normal text-2xl basic-1/2 ">FORGET PASSWORD</p>
+        <div className="inline-block align-right text-right text-sky-900	">
+          <HelpOutlineIcon className=""/>
+          <a href="#" className="m-2 text-s text-right">
+            Need help?
+          </a>
+        </div>
+        </div>
+      
+        <div className="rounded-2xl shadow-2xl flex w-full md:w-auto bg-blue-200">
+          <div className="flex flex-col items-center m-8">
+            <div className="rounded-2xl bg-gray-100 w-96 p-2 flex justify-centre">
               <EmailIcon className="m-2 " />
               <input
                 type="Email"
@@ -30,8 +36,8 @@ export default function ForgetPasswordPage() {
               />
             </div>
 
-            <div className="flex flex-col items-center mb-3">
-              <div className="rounded-2xl bg-gray-100 w-64 p-2 flex justify-centre">
+            <div className="flex flex-col items-center m-8">
+              <div className="bg-gray-100 w-96 p-2 flex items-center rounded-2xl">
                 <HttpsIcon className="m-2 " />
                 <input
                   type="OTP"
@@ -45,7 +51,7 @@ export default function ForgetPasswordPage() {
               <div>
                 <a
                   href="#"
-                  className="rounded-full inline-block font-bold bg-gray-100 w-64 p-2 flex items-center"
+                  className="bg-gray-100 w-96 p-2 m-8 flex rounded-2xl font-bold justify-center"
                 >
                   VERIFY
                 </a>
@@ -54,8 +60,8 @@ export default function ForgetPasswordPage() {
           </div>
         </div>
 
-        <div className="flex justify-left mb-5">
-          <a href="#" className="text-xs">
+        <div className="align-left mt-4">
+          <a href="#" className="text-xs text-sky-900">
             Back To Login
           </a>
         </div>
