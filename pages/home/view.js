@@ -4,21 +4,7 @@ import Comment from "@/component/Comment";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Rating, TextField, Typography, Box } from "@mui/material";
-
-const data = {
-  id: 1,
-  username: "alibinabu",
-  userImage: "ali",
-  title: "travel to Japan",
-  image: "ali",
-  date: "18-4-2023",
-  country: "Asia",
-  like: 243,
-  view: 500,
-  rating: 2.9,
-  description:
-    "How do we become better every single day? We develop practices that will help move us incrementally forward. Small steps, taken consistently. This is the path to a good life.While routines can be important for consistency and productivity, what is even more important is our practices. These are things we do, no matter what our routine looks like, no matter if something comes up that derails us.But we need to start small and make sure our practices are sustainable. The idea is to take small but consistent steps, every single day — 1% improvement.",
-};
+import { useRouter } from "next/router";
 
 export default function view() {
   const [comments, setComments] = useState([]);
@@ -34,21 +20,41 @@ export default function view() {
     fetchData();
   }, []);
 
+  const router = useRouter();
   const [ratingValue, setRatingValue] = useState(2.5);
+  const { id } = router.query;
+
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/postdata.json");
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const filteredData = data.filter((item) => item.id === parseInt(id));
 
   return (
     <Layout>
-      <BlogView
-        key={data.id}
-        image={data.image}
-        title={data.title}
-        username={data.username}
-        date={data.date}
-        like={data.like}
-        view={data.view}
-        rating={data.rating}
-        description={data.description}
-      />
+      {filteredData.length > 0 && (
+        <BlogView
+          key={filteredData[0].id}
+          id={filteredData[0].id}
+          image={filteredData[0].image}
+          title={filteredData[0].title}
+          username={filteredData[0].username}
+          date={filteredData[0].date}
+          like={filteredData[0].like}
+          view={filteredData[0].view}
+          rating={filteredData[0].rating}
+          description={filteredData[0].description}
+        />
+      )}
 
       <Typography className="view-blog-description font-bold mt-10">
         COMMENTS
