@@ -26,7 +26,7 @@ export default function RegisterAccount() {
         <Box className="flex flex-row inline text-[#0011A9] w-full">
           <Box className="ml-auto px-[10px]">
             <Link href="#" className="text-[11px] align-bottom">
-              <HelpOutlineIcon className="text-[13px] pb-0.5" /> Need help?
+              <HelpOutlineIcon className="text-[13px] pb-0.5" />Need help?
             </Link>
           </Box>
         </Box>
@@ -77,7 +77,7 @@ export default function RegisterAccount() {
 
 
           <Button
-            className="flex rounded-2xl bg-white hover:bg-[#F5F5F5] text-black w-96 p-2 flex mx-auto my-[20px] box-responsive"
+            className="flex rounded-2xl bg-white hover:bg-[#F5F5F5] text-black w-96 p-2 flex mx-auto my-[20px] font-bold box-responsive"
           >
             CREATE
           </Button>
