@@ -38,14 +38,14 @@ export default function sideNav() {
         </Typography>
         <Box className="drawer">
           <List>
-            <ListItemButton>
+            <ListItemButton href="/create">
               <ListItemIcon>
                 <AddCircleOutlineIcon />
               </ListItemIcon>
               <ListItemText primary="Create Blog" />
             </ListItemButton>
 
-            <ListItemButton>
+            <ListItemButton href="/settings">
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
