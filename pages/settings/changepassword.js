@@ -17,12 +17,14 @@ import Layout from "../../component/Layout";
 export default function SettingsChangePasswordPage() {
   const [userData, setUserData] = useState({
     username: "abcdefg",
-    email: "example@gmail.com",
-    country: "Malaysia",
+    location: "Kuala Lumpur",
+    job: "Travel Blogger", 
     phone: "012-3456789",
+    email: "example@gmail.com",
     instagram: "instaexample",
-    yearOfExperience: "10 years",
-    skills: "diving, playing, jogging",
+    country: "Malaysia",
+    yearofexperience: "10 years",
+    skill: "diving, playing, jogging",
     profilePic: "/../public/images/Rectangle 176.png",
   });
 
@@ -86,8 +88,8 @@ export default function SettingsChangePasswordPage() {
 
   const setPlaceHolder = () => {
     document.getElementById("username").placeholder = userData.username;
-    document.getElementById("email").placeholder = userData.email;
-    document.getElementById("country").placeholder = userData.country;
+    document.getElementById("location").placeholder = userData.location;
+    document.getElementById("job").placeholder = userData.job;
   };
 
   const router = useRouter();
@@ -210,25 +212,24 @@ export default function SettingsChangePasswordPage() {
                   className="detailsInput"
                 ></input>
               </Box>
-
               <Box className="profileDetailsBox" display="flex">
-                <Typography className="details">EMAIL:</Typography>
+                <Typography className="details">LOCATION:</Typography>
                 <input
                   disabled
-                  id="email"
+                  id="location"
                   type="text"
-                  name="email"
+                  name="location"
                   className="detailsInput"
                 ></input>
               </Box>
 
               <Box className="profileDetailsBox" display="flex">
-                <Typography className="details">COUNTRY:</Typography>
+                <Typography className="details">JOB:</Typography>
                 <input
                   disabled
-                  id="country"
+                  id="job"
                   type="text"
-                  name="country"
+                  name="job"
                   className="detailsInput"
                 ></input>
               </Box>
