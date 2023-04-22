@@ -19,10 +19,12 @@ import Layout from "../../component/Layout";
 export default function SettingsPage() {
   const [userData, setUserData] = useState({
     username: "abcdefg",
-    email: "example@gmail.com",
-    country: "Malaysia",
+    location: "Kuala Lumpur",
+    job: "Travel Blogger", 
     phone: "012-3456789",
+    email: "example@gmail.com",
     instagram: "instaexample",
+    country: "Malaysia",
     yearofexperience: "10 years",
     skill: "diving, playing, jogging",
     profilePic: "/../public/images/Rectangle 176.png",
@@ -75,10 +77,12 @@ export default function SettingsPage() {
 
   const setPlaceHolder = () => {
     document.getElementById("username").value = userData.username;
-    document.getElementById("email").value = userData.email;
-    document.getElementById("country").value = userData.country;
+    document.getElementById("location").value = userData.location;
+    document.getElementById("job").value = userData.job;
     document.getElementById("phone").value = userData.phone;
+    document.getElementById("email").value = userData.email;
     document.getElementById("instagram").value = userData.instagram;
+    document.getElementById("country").value = userData.country;
     document.getElementById("yearofexperience").value =
       userData.yearofexperience;
     document.getElementById("skill").value = userData.skill;
@@ -169,7 +173,7 @@ export default function SettingsPage() {
               />
 
               <IconButton
-                onClick={handleUploadClick}
+                // onClick={handleUploadClick}
                 id="uploadProfile"
                 component="label"
               >
@@ -197,22 +201,22 @@ export default function SettingsPage() {
               </Box>
 
               <Box className="profileDetailsBox" display="flex">
-                <Typography className="details">EMAIL:</Typography>
+                <Typography className="details">LOCATION:</Typography>
                 <input
-                  id="email"
+                  id="location"
                   type="text"
-                  name="email"
+                  name="location"
                   className="detailsInput"
                   onChange={handleOnChange}
                 ></input>
               </Box>
 
               <Box className="profileDetailsBox" display="flex">
-                <Typography className="details">COUNTRY:</Typography>
+                <Typography className="details">JOB:</Typography>
                 <input
-                  id="country"
+                  id="job"
                   type="text"
-                  name="country"
+                  name="job"
                   className="detailsInput"
                   onChange={handleOnChange}
                 ></input>
@@ -262,6 +266,25 @@ export default function SettingsPage() {
                 }}
               >
                 <Typography className="contactDetails" width={150}>
+                  Email
+                </Typography>
+                <input
+                  id="email"
+                  type="text"
+                  name="email"
+                  className="input"
+                  onChange={handleOnChange}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  mt: "5px",
+                  mb: "5px",
+                }}
+              >
+                <Typography className="contactDetails" width={150}>
                   Instagram
                 </Typography>
                 <input
@@ -272,12 +295,33 @@ export default function SettingsPage() {
                   onChange={handleOnChange}
                 />
               </Box>
+              
             </Box>
 
             <Box className="aboutDetailsBox">
               <Typography display="block" className="title">
                 Travel Experience
               </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  mt: "5px",
+                  mb: "5px",
+                }}
+              >
+                <Typography className="travelDetails" width={150}>
+                  Country
+                </Typography>
+                <input
+                  id="country"
+                  type="text"
+                  name="country"
+                  className="input"
+                  size={30}
+                  onChange={handleOnChange}
+                />
+              </Box>
               <Box
                 sx={{
                   display: "flex",
