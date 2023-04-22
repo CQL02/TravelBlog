@@ -14,7 +14,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useState } from "react";
 
-export default function sideNav() {
+export default function SideNavigation() {
   const [state, setState] = useState(false);
   const toggleDrawer = () => {
     setState(!state);

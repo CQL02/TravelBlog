@@ -29,8 +29,8 @@ export default function bloglistview(props) {
     isLoading: false,
   });
 
-  const handleDelete = () => {
-    idProductRef.current = id;
+  const handleDelete = (event) => {
+    event.stopPropagation();
     handleDialog("Are you sure you want to delete this post?", true);
   };
 
@@ -41,11 +41,10 @@ export default function bloglistview(props) {
     });
   };
 
-  const idProductRef = useRef();
   const areUSureDelete = (choose) => {
     if (choose) {
       //suppose to call api
-      onDelete();
+      onDelete(id);
       handleDialog("", false);
     } else {
       handleDialog("", false);
@@ -53,62 +52,66 @@ export default function bloglistview(props) {
   };
 
   return (
-    <Link href={`/home/view?id=${id}`}>
-      <Box className="search-country-box" key={id}>
-        <img
-          src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
-          style={{ width: "250px", height: "141px", borderRadius: "10px" }}
-        />
-        <Box key={id}>
-          <Box className="flex">
-            <Typography className="search-country-country-text">
-              {country}
-            </Typography>
-            {isOwn ? (
-              <Box className="icon-button-box">
-                <IconButton size="small">
-                  <EditOutlined className="icon-button-icon" />
-                </IconButton>
-                <IconButton size="small" onClick={() => handleDelete()}>
-                  <DeleteOutline className="icon-button-icon" />
-                </IconButton>
-              </Box>
-            ) : (
-              <></>
-            )}
-          </Box>
+    <Box>
+      {isOwn ? (
+        <Box className="icon-button-box">
+          <IconButton size="small" href={`/home/view/edit?id=${id}`}>
+            <EditOutlined className="icon-button-icon" />
+          </IconButton>
+          <IconButton size="small" onClick={(event) => handleDelete(event)}>
+            <DeleteOutline className="icon-button-icon" />
+          </IconButton>
+        </Box>
+      ) : (
+        <></>
+      )}
+      <Link href={`/home/view?id=${id}`}>
+        <Box className="search-country-box" key={id}>
+          <img
+            src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+            style={{ width: "250px", height: "141px", borderRadius: "10px" }}
+          />
+          <Box key={id}>
+            <Box className="flex">
+              <Typography className="search-country-country-text">
+                {country}
+              </Typography>
+            </Box>
 
-          <Typography className="search-country-title-text">{title}</Typography>
+            <Typography className="search-country-title-text">
+              {title}
+            </Typography>
 
-          <Box className="search-country-helper-text-box">
-            <Typography className="search-country-helper-text">
-              <PersonIcon className="search-country-icon" />
-              {username}
-            </Typography>
-            <Typography className="search-country-helper-text">
-              {date}
-            </Typography>
-          </Box>
+            <Box className="search-country-helper-text-box">
+              <Typography className="search-country-helper-text">
+                <PersonIcon className="search-country-icon" />
+                {username}
+              </Typography>
+              <Typography className="search-country-helper-text">
+                {date}
+              </Typography>
+            </Box>
 
-          <Box className="search-country-helper-text-box">
-            <Typography className="search-country-helper-text">
-              <FavoriteIcon className="search-country-icon" />
-              {like + "\t"}
-            </Typography>
-            <Typography className="search-country-helper-text">
-              <RemoveRedEyeIcon className="search-country-icon" />
-              {view + " "}
-            </Typography>
-            <Typography className="search-country-helper-text">
-              <StarRateIcon className="search-country-icon" />
-              {rating + " "}
-            </Typography>
+            <Box className="search-country-helper-text-box">
+              <Typography className="search-country-helper-text">
+                <FavoriteIcon className="search-country-icon" />
+                {like + "\t"}
+              </Typography>
+              <Typography className="search-country-helper-text">
+                <RemoveRedEyeIcon className="search-country-icon" />
+                {view + " "}
+              </Typography>
+              <Typography className="search-country-helper-text">
+                <StarRateIcon className="search-country-icon" />
+                {rating + " "}
+              </Typography>
+            </Box>
           </Box>
         </Box>
-        {dialog.isLoading && (
-          <Dialog onDialog={areUSureDelete} message={dialog.message} />
-        )}
-      </Box>
-    </Link>
+      </Link>
+      {dialog.isLoading && (
+        <Dialog onDialog={areUSureDelete} message={dialog.message} />
+      )}
+    </Box>
   );
 }
