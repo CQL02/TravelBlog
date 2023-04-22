@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
@@ -6,11 +5,8 @@ import { IconButton, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import Grid from "@mui/material/Grid";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import CreateIcon from "@mui/icons-material/Create";
 import Layout from "@/component/Layout";
 import Chart from "@/component/Chart";
@@ -92,7 +88,7 @@ export default function FirstProfilePage() {
             <Typography variant="subtitle1" style={{ marginLeft: "8px" }}>
               About
             </Typography>
-            <IconButton style={{ marginLeft: "auto" }}>
+            <IconButton style={{ marginLeft: "auto" }} href="/settings">
               <CreateIcon color="primary" />
             </IconButton>
           </div>

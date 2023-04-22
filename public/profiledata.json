@@ -1,0 +1,41 @@
+[
+  {
+    "username": "alibinabu",
+    "email": "ali@gmail.com",
+    "password": "123456",
+    "location": "Chicago, USA",
+    "job": "Travel Blogger",
+    "rating": 4.5,
+    "phone": "012-3456789",
+    "instragram": "aliabu_bin",
+    "travelCountry": "Malaysia, Cambodia, Thailand, Italy, England, Iceland",
+    "yearOfExperience": "5 years",
+    "skills": "Photography, Diving and Video Creating"
+  },
+  {
+    "username": "JonnyWellsonnn",
+    "email": "johnny@gmail.com",
+    "password": "123456",
+    "location": "Kuala Lumpur, Malaysia",
+    "job": "Travel Blogger",
+    "rating": 4.0,
+    "phone": "012-3456789",
+    "instragram": "aliabu_bin",
+    "travelCountry": "Malaysia, Cambodia, Thailand, Italy, England, Iceland",
+    "yearOfExperience": "1 year",
+    "skills": "Photography, Diving and Video Creating"
+  },
+  {
+    "username": "marryland",
+    "email": "marry@gmail.com",
+    "password": "123456",
+    "location": "Seoul, Korea",
+    "job": "Travel Blogger",
+    "rating": 5.0,
+    "phone": "012-3456789",
+    "instragram": "aliabu_bin",
+    "travelCountry": "Malaysia, Cambodia, Thailand, Italy, England, Iceland",
+    "yearOfExperience": "10 years",
+    "skills": "Photography, Diving and Video Creating"
+  }
+]

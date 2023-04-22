@@ -23,9 +23,10 @@
   font-size: 18px;
 }
 .icon-button-box {
+  position: absolute;
+  right: 0;
   display: flex;
   align-items: flex-end;
-  margin-left: 10px;
 }
 
 .delete-button-yes {
