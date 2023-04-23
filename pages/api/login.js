@@ -11,11 +11,11 @@ export default function login(req, res) {
   if (user) {
     res.setHeader(
       "Set-Cookie",
-      cookie.serialize("username", user.username, {
-        httpOnly: true,
+      cookie.serialize("token", user.username, {
         maxAge: 60 * 60 * 24 * 7, // 7 days
-        sameSite: "strict",
+        // sameSite: "strict",
         path: "/",
+        // secure: true,
       })
     );
     res.status(200).json({ message: "Login successful" });

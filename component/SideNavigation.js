@@ -12,9 +12,19 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useState } from "react";
+import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
 
 export default function SideNavigation() {
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const tokenFromCookie = Cookies.get("token");
+      setToken(tokenFromCookie);
+    }
+  }, []);
+
   const [state, setState] = useState(false);
   const toggleDrawer = () => {
     setState(!state);
@@ -34,7 +44,7 @@ export default function SideNavigation() {
           style={{ width: "15em" }}
         />
         <Typography className="drawer-text" align="center">
-          username
+          {token}
         </Typography>
         <Box className="drawer">
           <List>

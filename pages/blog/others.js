@@ -32,7 +32,7 @@ export default function viewPostsPage() {
           sx={{ width: 80, height: 80, marginTop: 3 }}
         />
       </div>
-      <Typography className="username">alibinabu</Typography>
+      <Typography className="username-text">alibinabu</Typography>
       <Typography className="description">
         Alibinabu is a software engineering who likes to travel around the world
       </Typography>
