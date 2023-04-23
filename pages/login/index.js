@@ -6,7 +6,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { IconButton } from "@mui/material";
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
 
 export default function MainPage() {
@@ -22,36 +21,6 @@ export default function MainPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    try {
-      // Send a POST request to the login API endpoint
-      const response = await axios.post("/api/login", {
-        username,
-        password,
-      });
-
-      if (response.data.message === "Login successful") {
-        // If login is successful, redirect to the home page
-        router.push("/home");
-      }
-    } catch (error) {
-      // If there is an error, display an error message
-      if (error.response) {
-        switch (error.response.data.error) {
-          case "UsernameNotFound":
-            setErrorMessage("Username not found.");
-            break;
-          case "IncorrectPassword":
-            setErrorMessage("Incorrect password.");
-            break;
-          default:
-            setErrorMessage("An error occurred. Please try again later.");
-            break;
-        }
-      } else {
-        setErrorMessage("An error occurred. Please try again later.");
-      }
-    }
   };
 
   return (
