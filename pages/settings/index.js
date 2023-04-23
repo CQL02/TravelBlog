@@ -15,22 +15,24 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 import Layout from "../../component/Layout";
+import { responsiveFontSizes } from "@mui/material";
 
 export default function SettingsPage() {
   const [userData, setUserData] = useState({
-    username: "abcdefg",
-    location: "Kuala Lumpur",
-    job: "Travel Blogger",
-    phone: "012-3456789",
-    email: "example@gmail.com",
-    instagram: "instaexample",
-    country: "Malaysia",
-    yearOfExperience: "10 years",
-    skills: "diving, playing, jogging",
-    profilePic: "/../public/images/Rectangle 176.png",
+    username: "failed",
+    email: "failed@gmail.com",
+    password: "failed",
+    location: "failed, USA",
+    job: "failed Blogger",
+    rating: 4.5,
+    phone: "failed",
+    instagram: "aliabu_bin",
+    travelCountry: "Malaysia, failed",
+    yearOfExperience: "failed years",
+    skills: "failed, Diving and Video Creating"
   });
 
-  const [profilePic, setProfilePic] = useState(userData.profilePic);
+  const [profilePic, setProfilePic] = useState("/../public/images/Rectangle 176.png");
   const fileInputRef = useRef(null);
 
   const handleUploadClick = () => {
@@ -60,53 +62,50 @@ export default function SettingsPage() {
 
   const handleOnClick = (event) => {
     event.preventDefault();
-
     document.getElementById("username-name").value = userData.username;
     document.getElementById("email").value = userData.email;
-    document.getElementById("country").value = userData.country;
+    document.getElementById("country").value = userData.travelCountry;
     document.getElementById("phone").value = userData.phone;
     document.getElementById("instagram").value = userData.instagram;
-    document.getElementById("yearofexperience").value =
-      userData.yearOfExperience;
-    document.getElementById("skill").value = userData.skills;
-
+    document.getElementById("yearofexperience").value = userData.yearOfExperience;
+    document.getElementById("skills").value = userData.skills;
     alert("Data is updated" + JSON.stringify(userData));
-    console.log(userData);
     setUserData(userData);
   };
 
-  const setPlaceHolder = () => {
+  const setValue = () => {
     document.getElementById("username-name").value = userData.username;
     document.getElementById("location").value = userData.location;
     document.getElementById("job").value = userData.job;
     document.getElementById("phone").value = userData.phone;
     document.getElementById("email").value = userData.email;
     document.getElementById("instagram").value = userData.instagram;
-    document.getElementById("country").value = userData.country;
-    document.getElementById("yearofexperience").value =
-      userData.yearOfExperience;
-    document.getElementById("skill").value = userData.skills;
+    document.getElementById("country").value = userData.travelCountry;
+    document.getElementById("yearofexperience").value = userData.yearOfExperience;
+    document.getElementById("skills").value = userData.skills;
   };
 
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUSerData = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await axios.get("/userdata.json");
-        setUserData(response.data);
+        const response = await axios.get("/profiledata.json");
+        const data = response.data;
+        const filterUser = data.filter(user => user.username === "JonnyWellsonnn")
+        setUserData(filterUser[0])
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
-    fetchUSerData();
-    setPlaceHolder();
+    fetchUserData();
+    setValue();
   });
 
   return (
     <Layout>
       <Box className="flex max-w-fit min-w-[230px]">
-        <Box className="flex-col h-[88vh]">
+        <Box className="flex flex-col h-[88vh]">
           <Button
             disabled
             className="mr-auto navigationButton"
@@ -177,7 +176,7 @@ export default function SettingsPage() {
                 <input
                   id="username-name"
                   type="text"
-                  name="username-name"
+                  name="username"
                   className="detailsInput"
                   onChange={handleOnChange}
                 ></input>
@@ -294,9 +293,9 @@ export default function SettingsPage() {
                   Skills
                 </Typography>
                 <input
-                  id="skill"
+                  id="skills"
                   type="text"
-                  name="skill"
+                  name="skills"
                   className="input"
                   size={30}
                   onChange={handleOnChange}

@@ -16,30 +16,27 @@ import Layout from "../../component/Layout";
 
 export default function SettingsChangePasswordPage() {
   const [userData, setUserData] = useState({
-    username: "abcdefg",
-    location: "Kuala Lumpur",
-    job: "Travel Blogger",
-    phone: "012-3456789",
-    email: "example@gmail.com",
-    instagram: "instaexample",
-    country: "Malaysia",
-    yearofexperience: "10 years",
-    skill: "diving, playing, jogging",
-    profilePic: "/../public/images/Rectangle 176.png",
+    username: "failed",
+    email: "failed@gmail.com",
+    password: "failed",
+    location: "failed, USA",
+    job: "failed Blogger",
+    rating: 4.5,
+    phone: "failed",
+    instagram: "aliabu_bin",
+    travelCountry: "Malaysia, failed",
+    yearOfExperience: "failed years",
+    skills: "failed, Diving and Video Creating"
   });
 
-  const [profilePic, setProfilePic] = useState(userData.profilePic);
+  const [profilePic, setProfilePic] = useState("/../public/images/Rectangle 176.png");
   const fileInputRef = useRef(null);
 
-  const [userPassword, setUserPassword] = useState("123456");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
-
+ 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
@@ -54,34 +51,36 @@ export default function SettingsChangePasswordPage() {
     }
   };
 
-  const checkIfCurrentPasswordMatched = () => {
-    return userPassword === oldPassword;
-  };
-
-  const checkIfNewPasswordMatched = () => {
-    return newPassword === confirmPassword;
-  };
-
   const handleOnClick = (event) => {
     event.preventDefault();
-
+   
     setOldPassword(document.getElementById("oldPassword").value);
     setNewPassword(document.getElementById("newPassword").value);
     setConfirmPassword(document.getElementById("confirmNewPassword").value);
 
-    document.getElementById("oldPassword").value = "";
-    document.getElementById("newPassword").value = "";
-    document.getElementById("confirmNewPassword").value = "";
-
-    if (!checkIfCurrentPasswordMatched()) {
+    if (!(userData.password === document.getElementById("oldPassword").value)) {
       alert("Wrong old password, please enter again!");
       return;
     }
 
-    if (!checkIfNewPasswordMatched()) {
+    if ((document.getElementById("newPassword").value != "")) {
+      alert("New password cannot be empty!")
+      return;
+    }
+
+    if ((document.getElementById("confirmNewPassword").value != "")) {
+      alert("Confirm new password cannot be empty!")
+      return;
+    }
+
+    if (!(document.getElementById("newPassword").value === document.getElementById("confirmNewPassword").value) ) {
       alert("New password is not matched, please enter again!");
       return;
     }
+    
+    document.getElementById("oldPassword").value = "";
+    document.getElementById("newPassword").value = "";
+    document.getElementById("confirmNewPassword").value = "";
 
     alert("New password is set");
   };
@@ -97,10 +96,10 @@ export default function SettingsChangePasswordPage() {
   useEffect(() => {
     const fetchUSerData = async () => {
       try {
-        const response = await axios.get("/userdata.json");
-        setUserData(response.data);
-        const password = await axios.get("/credential.json");
-        setUserPassword(password.data);
+        const response = await axios.get("/profiledata.json");
+        const data = response.data;
+        const filterUser = data.filter(user => user.username === "JonnyWellsonnn")
+        setUserData(filterUser[0])
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
