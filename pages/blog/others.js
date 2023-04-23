@@ -3,10 +3,14 @@ import { Avatar, Typography } from "@mui/material";
 import axios from "axios";
 import BlogListView from "@/component/BlogListView";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function viewPostsPage() {
   //load data
   const [data, setData] = useState([]);
+
+  const router = useRouter();
+  const { user } = router.query;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +25,7 @@ export default function viewPostsPage() {
   }, []);
 
   //ensure the posts are posted from same person
-  const sorted = data.filter((data) => data.username === "alibinabu");
+  const sorted = data.filter((data) => data.username === user);
 
   return (
     <Layout>
@@ -29,10 +33,11 @@ export default function viewPostsPage() {
         <Avatar
           alt="alibinabu"
           src="https://th.bing.com/th/id/OIP.WlUDXSME4D1KBxKlZEtVuwHaKA?pid=ImgDet&rs=1"
-          sx={{ width: 80, height: 80, marginTop: 3 }}
+          sx={{ width: 80, height: 80, marginTop: 3, cursor: "pointer" }}
+          onClick={() => router.push(`/profile/others?user=${user}`)}
         />
       </div>
-      <Typography className="username-text">alibinabu</Typography>
+      <Typography className="username-text">{user}</Typography>
       <Typography className="description">
         Alibinabu is a software engineering who likes to travel around the world
       </Typography>

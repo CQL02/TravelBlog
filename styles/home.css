@@ -55,6 +55,10 @@
   font-size: 12px;
   display: flex;
   align-items: flex-end;
+  cursor: pointer;
+}
+.view-blog-profile-view:hover {
+  color: rgb(0, 0, 151);
 }
 
 .view-blog-description {

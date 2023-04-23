@@ -155,7 +155,11 @@ export default function createIndex() {
               >
                 SAVE
               </Button>
-              <Button className="headerButton" size="small">
+              <Button
+                className="headerButton"
+                size="small"
+                onClick={() => router.back()}
+              >
                 CANCEL
               </Button>
             </Box>

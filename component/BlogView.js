@@ -3,6 +3,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useRouter } from "next/router";
 import { ArrowBack } from "@mui/icons-material";
+import Link from "next/link";
 
 export default function blogview(props) {
   const { id, image, title, username, date, like, view, rating, description } =
@@ -25,7 +26,10 @@ export default function blogview(props) {
         <Box>
           <Box className="search-country-helper-text-box">
             <Typography>{username}</Typography>
-            <Typography className="view-blog-profile-view">
+            <Typography
+              className="view-blog-profile-view"
+              onClick={() => router.push(`/blog/others?user=${username}`)}
+            >
               View Profile
             </Typography>
           </Box>
