@@ -12,31 +12,23 @@ import Layout from "@/component/Layout";
 import Chart from "@/component/Chart";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import axios from "axios";
 
 export default function FirstProfilePage() {
-  const [token, setToken] = useState("");
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const tokenFromCookie = Cookies.get("token");
-      setToken(tokenFromCookie);
-    }
-  }, []);
-
   const [userData, setUserData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("/profiledata.json");
-        setUserData(response.data.filter((item) => item.username === token));
+        setUserData(
+          response.data.filter((item) => item.username === "alibinabu")
+        );
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
     fetchData();
-  }, [token]);
+  }, []);
 
   return (
     <Layout>
