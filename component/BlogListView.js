@@ -55,7 +55,7 @@ export default function bloglistview(props) {
     <Box>
       {isOwn ? (
         <Box className="icon-button-box">
-          <IconButton size="small" href={`/home/view?id=${id}`}>
+          <IconButton size="small" href={`/home/view/edit?id=${id}`}>
             <EditOutlined className="icon-button-icon" />
           </IconButton>
           <IconButton size="small" onClick={(event) => handleDelete(event)}>

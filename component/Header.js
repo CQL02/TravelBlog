@@ -8,9 +8,22 @@ import InputBase from "@mui/material/InputBase";
 import SideNav from "./SideNavigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const router = useRouter();
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      router.push({
+        pathname: "/home/search",
+        query: { search: searchQuery },
+      });
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,8 +42,14 @@ export default function Header() {
       </Typography>
 
       <Paper component="form" className="headerSearchBox">
-        <SearchIcon />
-        <InputBase />
+        <InputBase
+          placeholder="Search…"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          onKeyDown={handleKeyDown}
+          startAdornment={<SearchIcon />}
+          inputProps={{ "aria-label": "search" }}
+        />
       </Paper>
 
       {isMobile ? (
