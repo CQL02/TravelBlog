@@ -7,7 +7,21 @@ import { Button, Rating, TextField, Typography, Box } from "@mui/material";
 import { useRouter } from "next/router";
 
 export default function view() {
+
   const [comments, setComments] = useState([]);
+  const [userComment, setUserComment] = useState("");
+
+  const handleCommentChange = (event) => {
+    setUserComment(event.target.value);
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    alert("Your comment is successfully saved! Your comment is " + userComment + " with rating " + ratingValue);
+    setUserComment("");
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -69,7 +83,7 @@ export default function view() {
           }}
           precision={0.5}
           size="small"
-          style={{ color: "black" }}
+        
         />
       </Box>
 
@@ -79,6 +93,9 @@ export default function view() {
           placeholder="comments..."
           rows={5}
           className="comment-profile-description "
+          name = "comment"
+          value = {userComment}
+          onChange= {handleCommentChange}
           InputProps={{
             style: {
               fontSize: 14,
@@ -89,6 +106,7 @@ export default function view() {
           variant="contained"
           className="comment-profile-button"
           size="small"
+          onClick={handleSubmit}
         >
           SAVE
         </Button>
