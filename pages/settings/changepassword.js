@@ -18,7 +18,7 @@ export default function SettingsChangePasswordPage() {
   const [userData, setUserData] = useState({
     username: "abcdefg",
     location: "Kuala Lumpur",
-    job: "Travel Blogger", 
+    job: "Travel Blogger",
     phone: "012-3456789",
     email: "example@gmail.com",
     instagram: "instaexample",
@@ -87,7 +87,7 @@ export default function SettingsChangePasswordPage() {
   };
 
   const setPlaceHolder = () => {
-    document.getElementById("username").placeholder = userData.username;
+    document.getElementById("username-name").placeholder = userData.username;
     document.getElementById("location").placeholder = userData.location;
     document.getElementById("job").placeholder = userData.job;
   };
@@ -111,13 +111,7 @@ export default function SettingsChangePasswordPage() {
 
   return (
     <Layout>
-      <Box
-        sx={{
-          display: "flex",
-          minWidth: 230,
-          maxWidth: "fit-content",
-        }}
-      >
+      <Box className="flex min-w-[230px] max-w-fit">
         <Box
           sx={{
             display: "flex",
@@ -166,13 +160,7 @@ export default function SettingsChangePasswordPage() {
           variant="middle"
           color="black"
         />
-        <Box
-          id="rightBox"
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
+        <Box id="rightBox" className="flex">
           <Box id="imageBox" position="relative" display="inline-block">
             <Image
               id="profileImage"
@@ -194,21 +182,15 @@ export default function SettingsChangePasswordPage() {
               <PhotoCameraIcon fontSize="medium" />
             </IconButton>
           </Box>
-          <Box
-            id="profileBox"
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+          <Box id="profileBox" className="flex-col">
             <Box id="profileDetailContainerBox">
               <Box className="profileDetailsBox" display="flex">
                 <Typography className="details">USERNAME:</Typography>
                 <input
                   disabled
-                  id="username"
+                  id="username-name"
                   type="text"
-                  name="username"
+                  name="username-name"
                   className="detailsInput"
                 ></input>
               </Box>

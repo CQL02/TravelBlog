@@ -2,12 +2,21 @@ import Layout from "../../component/Layout";
 import { Avatar, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import BlogListView from "@/component/BlogListView";
 
 export default function viewPostsPage() {
   //load data
   const [data, setData] = useState([]);
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const tokenFromCookie = Cookies.get("token");
+      setToken(tokenFromCookie);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +31,7 @@ export default function viewPostsPage() {
   }, []);
 
   //ensure the posts are posted from same person
-  const sorted = data.filter((data) => data.username === "alibinabu");
+  const sorted = data.filter((data) => data.username === token);
   const handleDeletePost = (postId) => {
     setData(data.filter((post) => post.id !== postId));
   };
@@ -35,7 +44,7 @@ export default function viewPostsPage() {
           sx={{ width: 80, height: 80, marginTop: 3 }}
         />
       </div>
-      <Typography className="username">alibinabu</Typography>
+      <Typography className="username-text">alibinabu</Typography>
       <Typography className="description">
         Alibinabu is a software engineering who likes to travel around the world
       </Typography>
