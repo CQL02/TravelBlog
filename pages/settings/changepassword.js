@@ -11,10 +11,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 import Layout from "../../component/Layout";
 
 export default function SettingsChangePasswordPage() {
+  const { data: session } = useSession();
+
   const [userData, setUserData] = useState({
     username: "failed",
     email: "failed@gmail.com",
@@ -26,17 +29,18 @@ export default function SettingsChangePasswordPage() {
     instagram: "aliabu_bin",
     travelCountry: "Malaysia, failed",
     yearOfExperience: "failed years",
-    skills: "failed, Diving and Video Creating"
+    skills: "failed, Diving and Video Creating",
   });
 
-  const [profilePic, setProfilePic] = useState("/../public/images/Rectangle 176.png");
+  const [profilePic, setProfilePic] = useState(
+    "/../public/images/Rectangle 176.png"
+  );
   const fileInputRef = useRef(null);
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
- 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
@@ -53,7 +57,7 @@ export default function SettingsChangePasswordPage() {
 
   const handleOnClick = (event) => {
     event.preventDefault();
-   
+
     setOldPassword(document.getElementById("oldPassword").value);
     setNewPassword(document.getElementById("newPassword").value);
     setConfirmPassword(document.getElementById("confirmNewPassword").value);
@@ -63,21 +67,26 @@ export default function SettingsChangePasswordPage() {
       return;
     }
 
-    if ((document.getElementById("newPassword").value != "")) {
-      alert("New password cannot be empty!")
+    if (document.getElementById("newPassword").value != "") {
+      alert("New password cannot be empty!");
       return;
     }
 
-    if ((document.getElementById("confirmNewPassword").value != "")) {
-      alert("Confirm new password cannot be empty!")
+    if (document.getElementById("confirmNewPassword").value != "") {
+      alert("Confirm new password cannot be empty!");
       return;
     }
 
-    if (!(document.getElementById("newPassword").value === document.getElementById("confirmNewPassword").value) ) {
+    if (
+      !(
+        document.getElementById("newPassword").value ===
+        document.getElementById("confirmNewPassword").value
+      )
+    ) {
       alert("New password is not matched, please enter again!");
       return;
     }
-    
+
     document.getElementById("oldPassword").value = "";
     document.getElementById("newPassword").value = "";
     document.getElementById("confirmNewPassword").value = "";
@@ -98,8 +107,10 @@ export default function SettingsChangePasswordPage() {
       try {
         const response = await axios.get("/profiledata.json");
         const data = response.data;
-        const filterUser = data.filter(user => user.username === "JonnyWellsonnn")
-        setUserData(filterUser[0])
+        const filterUser = data.filter(
+          (user) => user.email === session.user.email
+        );
+        setUserData(filterUser[0]);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }

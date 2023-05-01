@@ -13,15 +13,18 @@ import Chart from "@/component/Chart";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function FirstProfilePage() {
   const [userData, setUserData] = useState([]);
+  const { data: session } = useSession();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("/profiledata.json");
         setUserData(
-          response.data.filter((item) => item.username === "alibinabu")
+          response.data.filter((item) => item.email === session.user.email)
         );
       } catch (error) {
         console.error("Error fetching data: ", error);

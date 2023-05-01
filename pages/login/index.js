@@ -7,6 +7,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { IconButton } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function MainPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +22,16 @@ export default function MainPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    try {
+      const result = await signIn("credentials", {
+        username: username,
+        password: password,
+        redirect: true,
+        callbackUrl: "/home",
+      });
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
   };
 
   return (
