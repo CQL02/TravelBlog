@@ -16,8 +16,11 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 import Layout from "../../component/Layout";
 import { responsiveFontSizes } from "@mui/material";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function SettingsPage() {
+  const { data: session } = useSession();
+
   const [userData, setUserData] = useState({
     username: "failed",
     email: "failed@gmail.com",
@@ -29,10 +32,12 @@ export default function SettingsPage() {
     instagram: "aliabu_bin",
     travelCountry: "Malaysia, failed",
     yearOfExperience: "failed years",
-    skills: "failed, Diving and Video Creating"
+    skills: "failed, Diving and Video Creating",
   });
 
-  const [profilePic, setProfilePic] = useState("/../public/images/Rectangle 176.png");
+  const [profilePic, setProfilePic] = useState(
+    "/../public/images/Rectangle 176.png"
+  );
   const fileInputRef = useRef(null);
 
   const handleUploadClick = () => {
@@ -67,7 +72,8 @@ export default function SettingsPage() {
     document.getElementById("country").value = userData.travelCountry;
     document.getElementById("phone").value = userData.phone;
     document.getElementById("instagram").value = userData.instagram;
-    document.getElementById("yearofexperience").value = userData.yearOfExperience;
+    document.getElementById("yearofexperience").value =
+      userData.yearOfExperience;
     document.getElementById("skills").value = userData.skills;
     alert("Data is updated" + JSON.stringify(userData));
     setUserData(userData);
@@ -81,7 +87,8 @@ export default function SettingsPage() {
     document.getElementById("email").value = userData.email;
     document.getElementById("instagram").value = userData.instagram;
     document.getElementById("country").value = userData.travelCountry;
-    document.getElementById("yearofexperience").value = userData.yearOfExperience;
+    document.getElementById("yearofexperience").value =
+      userData.yearOfExperience;
     document.getElementById("skills").value = userData.skills;
   };
 
@@ -92,8 +99,10 @@ export default function SettingsPage() {
       try {
         const response = await axios.get("/profiledata.json");
         const data = response.data;
-        const filterUser = data.filter(user => user.username === "JonnyWellsonnn")
-        setUserData(filterUser[0])
+        const filterUser = data.filter(
+          (user) => user.email === session.user.email
+        );
+        setUserData(filterUser[0]);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }

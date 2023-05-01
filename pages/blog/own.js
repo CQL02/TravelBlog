@@ -2,11 +2,29 @@ import Layout from "../../component/Layout";
 import { Avatar, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useSession, signIn, signOut } from "next-auth/react";
 import BlogListView from "@/component/BlogListView";
 
 export default function viewPostsPage() {
   const [data, setData] = useState([]);
+  const { data: session } = useSession();
+
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/profiledata.json");
+        setUsername(
+          response.data.filter((data) => data.email === session.user.email)[0]
+            .username
+        );
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,10 +38,11 @@ export default function viewPostsPage() {
   }, []);
 
   // ensure the posts are posted from same person
-  const sorted = data.filter((data) => data.username === "alibinabu");
+  const sorted = data.filter((data) => data.username === username);
   const handleDeletePost = (postId) => {
     setData(data.filter((post) => post.id !== postId));
   };
+
   return (
     <Layout>
       <div className="avatar-container">
@@ -33,7 +52,7 @@ export default function viewPostsPage() {
           sx={{ width: 80, height: 80, marginTop: 3 }}
         />
       </div>
-      <Typography className="username-text">alibinabu</Typography>
+      <Typography className="username-text">{username}</Typography>
       <Typography className="description">
         Alibinabu is a software engineering who likes to travel around the world
       </Typography>

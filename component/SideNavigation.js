@@ -12,13 +12,22 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function SideNavigation() {
   const [state, setState] = useState(false);
   const toggleDrawer = () => {
     setState(!state);
+  };
+
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: `${window.location.origin}/` }); // specify the callback URL to redirect to
+    router.push("/"); // navigate programmatically to the home page
   };
 
   return (
@@ -35,7 +44,7 @@ export default function SideNavigation() {
           style={{ width: "15em" }}
         />
         <Typography className="drawer-text" align="center">
-          username
+          {session?.user?.email}
         </Typography>
         <Box className="drawer">
           <List>
@@ -53,7 +62,7 @@ export default function SideNavigation() {
               <ListItemText primary="Settings" />
             </ListItemButton>
 
-            <ListItemButton>
+            <ListItemButton onClick={handleSignOut}>
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>
