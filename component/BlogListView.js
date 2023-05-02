@@ -68,7 +68,7 @@ export default function bloglistview(props) {
       <Link href={`/home/view?id=${id}`}>
         <Box className="search-country-box" key={id}>
           <img
-            src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+            src={image}
             style={{ width: "250px", height: "141px", borderRadius: "10px" }}
           />
           <Box key={id}>

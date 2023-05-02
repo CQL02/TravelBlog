@@ -32,14 +32,14 @@ export default function viewPostsPage() {
       <div className="avatar-container">
         <Avatar
           alt="alibinabu"
-          src="https://th.bing.com/th/id/OIP.WlUDXSME4D1KBxKlZEtVuwHaKA?pid=ImgDet&rs=1"
+          src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
           sx={{ width: 80, height: 80, marginTop: 3, cursor: "pointer" }}
           onClick={() => router.push(`/profile/others?user=${user}`)}
         />
       </div>
       <Typography className="username-text">{user}</Typography>
       <Typography className="description">
-        Alibinabu is a software engineering who likes to travel around the world
+        {user} is a software engineering who likes to travel around the world
       </Typography>
 
       {sorted.map((data) => (

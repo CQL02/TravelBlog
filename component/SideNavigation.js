@@ -40,7 +40,7 @@ export default function SideNavigation() {
           WELCOME!
         </Typography>
         <img
-          src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+          src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
           style={{ width: "15em" }}
         />
         <Typography className="drawer-text" align="center">
