@@ -61,8 +61,9 @@ export default function ViewPostsPage() {
       <div className="avatar-container">
         <Avatar
           alt={username}
-          src="https://th.bing.com/th/id/OIP.WlUDXSME4D1KBxKlZEtVuwHaKA?pid=ImgDet&rs=1"
+          src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
           sx={{ width: 80, height: 80, marginTop: 3 }}
+          onClick={() => router.push("/profile")}
         />
       </div>
       <Typography className="username-text">{username}</Typography>

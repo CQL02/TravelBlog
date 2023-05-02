@@ -13,16 +13,18 @@ export default function blogview(props) {
   return (
     <Box>
       <Box className="w-[600px] ml-auto mr-auto flex">
-        <Button className="headerButton absolute" onClick={() => router.back()}>
+        <Button className="headerButton" onClick={() => router.back()}>
           <ArrowBack />
           BACK
         </Button>
-
-        <Typography className="view-blog-title">{title}</Typography>
       </Box>
 
+      <Typography className="view-blog-title w-[600px]" align="center">
+        {title}
+      </Typography>
+
       <Box className="view-blog-profile-box">
-        <Avatar src="https://img.freepik.com/premium-photo/handsome-young-businessman-shirt-eyeglasses_85574-6228.jpg" />
+        <Avatar src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg" />
         <Box>
           <Box className="search-country-helper-text-box">
             <Typography>{username}</Typography>
@@ -30,7 +32,7 @@ export default function blogview(props) {
               className="view-blog-profile-view"
               onClick={() => router.push(`/blog/others?user=${username}`)}
             >
-              View Profile
+              View Blog
             </Typography>
           </Box>
           <Typography
@@ -54,7 +56,7 @@ export default function blogview(props) {
       </Box>
 
       <img
-        src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+        src={image}
         style={{
           maxWidth: "600px",
           maxHeight: "338px",
