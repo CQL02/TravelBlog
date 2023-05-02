@@ -1,9 +1,42 @@
 import Layout from "@/component/Layout";
-import { Box, Button, Chip, InputBase, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  InputBase,
+  Typography,
+  TextField,
+  styled,
+  MenuItem,
+} from "@mui/material";
 import { useState, useRef, useEffect } from "react";
 import ImageIcon from "@mui/icons-material/Image";
 import { useRouter } from "next/router";
 import axios from "axios";
+
+const countries = [
+  "Antarctica",
+  "Africa",
+  "Asia",
+  "Australia",
+  "Europe",
+  "North America",
+  "South America",
+];
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "transparent",
+    },
+    "&:hover fieldset": {
+      borderColor: "transparent",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "transparent",
+    },
+  },
+}));
 
 export default function createIndex() {
   const [image, setImage] = useState(null);
@@ -12,6 +45,14 @@ export default function createIndex() {
   const router = useRouter();
 
   const { id } = router.query;
+
+  const handleSelectChange = (event) => {
+    const selectedCountry = event.target.value;
+    setThisPost((prevPost) => ({
+      ...prevPost,
+      country: selectedCountry,
+    }));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,9 +109,9 @@ export default function createIndex() {
     event.preventDefault();
     const updatedPost = {
       ...thisPost,
-      country: document.getElementById("country").value,
-      title: document.getElementById("title").value,
-      description: document.getElementById("description").value,
+      country: document.getElementById("country")?.value ?? "",
+      title: document.getElementById("title")?.value ?? "",
+      description: document.getElementById("description")?.value ?? "",
     };
 
     alert("Post is updated" + JSON.stringify(updatedPost));
@@ -82,16 +123,23 @@ export default function createIndex() {
       {thisPost && (
         <Box>
           <Typography className="flex justify-center home-title-text">
-            CREATE POST
+            Edit POST
           </Typography>
           <Box className="flex mt-1 justify-center">
             <Typography className="create-title">COUNTRY</Typography>
-            <InputBase
-              id="country"
+            <StyledTextField
               className="create-input"
-              defaultValue={thisPost.country}
-              onChange={handleInputChange}
-            />
+              select
+              size="small"
+              value={thisPost.country}
+              onChange={handleSelectChange}
+            >
+              {countries.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </StyledTextField>
           </Box>
 
           <Box className="flex mt-1 justify-center">
