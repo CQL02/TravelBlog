@@ -18,6 +18,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 export default function FirstProfilePage() {
   const [userData, setUserData] = useState([]);
   const { data: session } = useSession();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,10 +29,20 @@ export default function FirstProfilePage() {
         );
       } catch (error) {
         console.error("Error fetching data: ", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
-  }, []);
+  }, [session]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <p>Loading...</p>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

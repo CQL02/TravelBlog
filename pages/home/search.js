@@ -7,16 +7,19 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import BlogListView from "@/component/BlogListView";
 
-export default function searchcountry() {
+export default function SearchCountry() {
   const router = useRouter();
-  const search = router.query.search;
+  const { search } = router.query;
 
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("/postdata.json");
         setData(response.data);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -24,12 +27,9 @@ export default function searchcountry() {
     fetchData();
   }, []);
 
-  const filteredData = data.reduce((acc, item) => {
-    if (item.title.toLowerCase().includes(search.toLowerCase())) {
-      acc.push(item);
-    }
-    return acc;
-  }, []);
+  const filteredData = data.filter(({ title }) =>
+    title.toLowerCase().includes(search?.toLowerCase())
+  );
 
   return (
     <Layout>
@@ -40,22 +40,40 @@ export default function searchcountry() {
         </Button>
       </Link>
       <Typography className="search-country-main-title" align="center">
-        SEARCH RESULT:{search}
+        SEARCH RESULT: {search}
       </Typography>
-      {filteredData.map((data) => (
-        <BlogListView
-          key={data.id}
-          id={data.id}
-          image={data.image}
-          country={data.country}
-          title={data.title}
-          username={data.username}
-          date={data.date}
-          like={data.like}
-          view={data.view}
-          rating={data.rating}
-        />
-      ))}
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : data.length > 0 ? (
+        filteredData.map(
+          ({
+            id,
+            image,
+            country,
+            title,
+            username,
+            date,
+            like,
+            view,
+            rating,
+          }) => (
+            <BlogListView
+              key={id}
+              id={id}
+              image={image}
+              country={country}
+              title={title}
+              username={username}
+              date={date}
+              like={like}
+              view={view}
+              rating={rating}
+            />
+          )
+        )
+      ) : (
+        <p>No data found</p>
+      )}
     </Layout>
   );
 }
