@@ -15,25 +15,22 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 import Layout from "../../component/Layout";
-import { responsiveFontSizes } from "@mui/material";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
 
-  const [userData, setUserData] = useState({
-    username: "failed",
-    email: "failed@gmail.com",
-    password: "failed",
-    location: "failed, USA",
-    job: "failed Blogger",
-    rating: 4.5,
-    phone: "failed",
-    instagram: "aliabu_bin",
-    travelCountry: "Malaysia, failed",
-    yearOfExperience: "failed years",
-    skills: "failed, Diving and Video Creating",
-  });
+  const [loading, setLoading] = useState(true);
+
+  // const [username, setUsername] = useState()
+  // const [email, setEmail] = useState()
+  // const [country, setCountry] = useState()
+  // const [phone, setUsername] = useState()
+  // const [instagram, setUsername] = useState()
+  // const [yearofexperience, setUsername] = useState()
+  // const [skills, setUsername] = useState()
+
+  const [userData, setUserData] = useState([]);
 
   const [profilePic, setProfilePic] = useState(
     "/../public/images/Rectangle 176.png"
@@ -72,8 +69,7 @@ export default function SettingsPage() {
     document.getElementById("country").value = userData.travelCountry;
     document.getElementById("phone").value = userData.phone;
     document.getElementById("instagram").value = userData.instagram;
-    document.getElementById("yearofexperience").value =
-      userData.yearOfExperience;
+    document.getElementById("yearofexperience").value = userData.yearOfExperience;
     document.getElementById("skills").value = userData.skills;
     alert("Data is updated" + JSON.stringify(userData));
     setUserData(userData);
@@ -87,29 +83,35 @@ export default function SettingsPage() {
     document.getElementById("email").value = userData.email;
     document.getElementById("instagram").value = userData.instagram;
     document.getElementById("country").value = userData.travelCountry;
-    document.getElementById("yearofexperience").value =
-      userData.yearOfExperience;
+    document.getElementById("yearofexperience").value = userData.yearOfExperience;
     document.getElementById("skills").value = userData.skills;
   };
 
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get("/profiledata.json");
-        const data = response.data;
-        const filterUser = data.filter(
-          (user) => user.email === session.user.email
-        );
-        setUserData(filterUser[0]);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-    fetchUserData();
-    setValue();
-  });
+
+    if (session?.user) {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get("/profiledata.json");
+          const data = response.data;
+          const filterUser = data.filter(
+            (user) => user.email === session.user.email
+          );
+          setUserData(filterUser[0]);
+        } catch (error) {
+          console.error("Error fetching data: ", error);
+        } 
+      };
+      fetchUserData();
+      setValue();
+      console.log("usedata", userData)
+    }
+    else {
+      console.log("session undefined")
+    }
+  }, [session]);
 
   return (
     <Layout>
@@ -164,7 +166,7 @@ export default function SettingsPage() {
               />
 
               <IconButton
-                onClick={handleUploadClick}
+                // onClick={handleUploadClick}
                 id="uploadProfile"
                 component="label"
               >
@@ -188,6 +190,7 @@ export default function SettingsPage() {
                   name="username"
                   className="detailsInput"
                   onChange={handleOnChange}
+                  value = {userData.username}
                 ></input>
               </Box>
 
@@ -199,6 +202,7 @@ export default function SettingsPage() {
                   name="location"
                   className="detailsInput"
                   onChange={handleOnChange}
+                  value = {userData.location}
                 ></input>
               </Box>
 
@@ -210,6 +214,7 @@ export default function SettingsPage() {
                   name="job"
                   className="detailsInput"
                   onChange={handleOnChange}
+                  value = {userData.job}
                 ></input>
               </Box>
             </Box>
@@ -239,6 +244,7 @@ export default function SettingsPage() {
                   name="phone"
                   className="input"
                   onChange={handleOnChange}
+                  value = {userData.phone}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -251,6 +257,7 @@ export default function SettingsPage() {
                   name="email"
                   className="input"
                   onChange={handleOnChange}
+                  value = {userData.email}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -263,6 +270,7 @@ export default function SettingsPage() {
                   name="instagram"
                   className="input"
                   onChange={handleOnChange}
+                  value = {userData.instagram}
                 />
               </Box>
             </Box>
@@ -278,10 +286,11 @@ export default function SettingsPage() {
                 <input
                   id="country"
                   type="text"
-                  name="country"
+                  name="travelCountry"
                   className="input"
                   size={30}
                   onChange={handleOnChange}
+                  value = {userData.travelCountry}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -291,10 +300,11 @@ export default function SettingsPage() {
                 <input
                   id="yearofexperience"
                   type="text"
-                  name="yearofexperience"
+                  name="yearOfExperience"
                   className="input"
                   size={30}
                   onChange={handleOnChange}
+                  value = {userData.yearOfExperience}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -308,6 +318,7 @@ export default function SettingsPage() {
                   className="input"
                   size={30}
                   onChange={handleOnChange}
+                  value = {userData.skills}
                 />
               </Box>
             </Box>
