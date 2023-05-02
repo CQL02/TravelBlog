@@ -9,7 +9,7 @@ export default function ForgetPasswordPage() {
     <div className="flex flex-col min-h-screen py-2 bg-white">
       <Head>
         <title>Forget Password</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/travel.ico" />
       </Head>
 
       <main className="flex flex-col items-center w-full flex-1 px-20 text-center">

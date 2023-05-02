@@ -2,16 +2,17 @@ import Layout from "../../component/Layout";
 import { Avatar, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import BlogListView from "@/component/BlogListView";
 
-export default function viewPostsPage() {
-  const [data, setData] = useState([]);
+export default function ViewPostsPage() {
   const { data: session } = useSession();
-
+  const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
+  const [posts, setPosts] = useState([]);
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProfileData = async () => {
       try {
         const response = await axios.get("/profiledata.json");
         setUsername(
@@ -19,58 +20,70 @@ export default function viewPostsPage() {
             .username
         );
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching profile data:", error);
       }
     };
-    fetchData();
-  }, []);
+    if (session) {
+      fetchProfileData();
+    }
+  }, [session]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPostData = async () => {
       try {
         const response = await axios.get("/postdata.json");
-        setData(response.data);
+        setPosts(response.data.filter((post) => post.username === username));
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching post data:", error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchData();
-  }, []);
+    if (username) {
+      fetchPostData();
+    }
+  }, [username]);
 
-  // ensure the posts are posted from same person
-  const sorted = data.filter((data) => data.username === username);
   const handleDeletePost = (postId) => {
-    setData(data.filter((post) => post.id !== postId));
+    setPosts(posts.filter((post) => post.id !== postId));
   };
+
+  if (loading) {
+    return (
+      <Layout>
+        <p>Loading...</p>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
       <div className="avatar-container">
         <Avatar
-          alt="alibinabu"
+          alt={username}
           src="https://th.bing.com/th/id/OIP.WlUDXSME4D1KBxKlZEtVuwHaKA?pid=ImgDet&rs=1"
           sx={{ width: 80, height: 80, marginTop: 3 }}
         />
       </div>
       <Typography className="username-text">{username}</Typography>
       <Typography className="description">
-        Alibinabu is a software engineering who likes to travel around the world
+        {username} is a software engineer who likes to travel around the world.
       </Typography>
-      {sorted.map((data) => (
+      {posts.map((post) => (
         <BlogListView
-          key={data.id}
-          id={data.id}
-          image={data.image}
-          country={data.country}
-          title={data.title}
-          username={data.username}
-          date={data.date}
-          like={data.like}
-          view={data.view}
-          rating={data.rating}
-          description={data.description}
+          key={post.id}
+          id={post.id}
+          image={post.image}
+          country={post.country}
+          title={post.title}
+          username={post.username}
+          date={post.date}
+          like={post.like}
+          view={post.view}
+          rating={post.rating}
+          description={post.description}
           isOwn={true}
-          onDelete={() => handleDeletePost(data.id)}
+          onDelete={() => handleDeletePost(post.id)}
         />
       ))}
     </Layout>

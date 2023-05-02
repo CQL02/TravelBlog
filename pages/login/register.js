@@ -24,7 +24,7 @@ export default function RegisterAccount() {
     <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-white">
       <Head>
         <title>Register Account</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/travel.ico" />
       </Head>
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
