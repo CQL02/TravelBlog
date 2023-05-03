@@ -20,7 +20,7 @@ export default function ForgetPasswordPage() {
           <p className="text-center font-normal text-2xl basic-1/2 ">
             FORGET PASSWORD
           </p>
-          <div className="inline-block align-right text-right text-sky-900 w-[500px]">
+          {/* <div className="inline-block align-right text-right text-sky-900 w-[500px]">
             <a
               href="#"
               className="text-[15px] text-right hover:bg-slate-100 rounded-[10px] px-1 py-0.5  mb-0.5"
@@ -28,7 +28,7 @@ export default function ForgetPasswordPage() {
               <HelpOutlineIcon className="text-[20px] mr-[5px] align-bottom" />
               Need help?
             </a>
-          </div>
+          </div> */}
         </div>
 
         <div className="rounded-2xl shadow-2xl flex w-full md:w-auto bg-blue-200">
