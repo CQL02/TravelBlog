@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Drawer,
   IconButton,
@@ -15,6 +16,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { Close } from "@mui/icons-material";
 
 export default function SideNavigation() {
   const [state, setState] = useState(false);
@@ -36,12 +38,19 @@ export default function SideNavigation() {
         <MenuIcon />
       </IconButton>
       <Drawer anchor="left" open={state} onClose={() => setState(false)}>
+        <IconButton
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+          onClick={() => setState(false)}
+        >
+          <Close />
+        </IconButton>
         <Typography className="drawer-text" align="center">
           WELCOME!
         </Typography>
-        <img
+        <Avatar
           src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
-          style={{ width: "15em" }}
+          variant="square"
+          sx={{ width: 250, height: 250 }}
         />
         <Typography className="drawer-text" align="center">
           {session?.user?.email}

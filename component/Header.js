@@ -37,7 +37,12 @@ export default function Header() {
   return (
     <Box sx={{ display: "flex", boxShadow: 3 }}>
       <SideNav />
-      <Typography m={1} pr={3}>
+      <Typography
+        m={1}
+        pr={3}
+        onClick={() => router.push("/home")}
+        sx={{ cursor: "pointer" }}
+      >
         TRAVEL NOW
       </Typography>
 

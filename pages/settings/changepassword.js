@@ -14,6 +14,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 import Layout from "../../component/Layout";
+import { Avatar } from "@mui/material";
 
 export default function SettingsChangePasswordPage() {
   const { data: session } = useSession();
@@ -65,19 +66,13 @@ export default function SettingsChangePasswordPage() {
     if (!(userData.password === document.getElementById("oldPassword").value)) {
       alert("Wrong old password, please enter again!");
       return;
-    }
-
-    if (document.getElementById("newPassword").value != "") {
+    } else if (document.getElementById("newPassword").value == "") {
       alert("New password cannot be empty!");
       return;
-    }
-
-    if (document.getElementById("confirmNewPassword").value != "") {
+    } else if (document.getElementById("confirmNewPassword").value == "") {
       alert("Confirm new password cannot be empty!");
       return;
-    }
-
-    if (
+    } else if (
       !(
         document.getElementById("newPassword").value ===
         document.getElementById("confirmNewPassword").value
@@ -85,13 +80,18 @@ export default function SettingsChangePasswordPage() {
     ) {
       alert("New password is not matched, please enter again!");
       return;
+    } else if (
+      document.getElementById("newPassword").value ===
+      document.getElementById("oldPassword").value
+    ) {
+      alert("New password cannot be same as old password!");
+    } else {
+      document.getElementById("oldPassword").value = "";
+      document.getElementById("newPassword").value = "";
+      document.getElementById("confirmNewPassword").value = "";
+
+      alert("New password is set");
     }
-
-    document.getElementById("oldPassword").value = "";
-    document.getElementById("newPassword").value = "";
-    document.getElementById("confirmNewPassword").value = "";
-
-    alert("New password is set");
   };
 
   const setPlaceHolder = () => {
@@ -172,25 +172,11 @@ export default function SettingsChangePasswordPage() {
         />
         <Box id="rightBox" className="flex">
           <Box id="imageBox" position="relative" display="inline-block">
-            <Image
-              id="profileImage"
-              src={profilePic}
-              alt="Profile picture"
-              width={210}
-              height={210}
-              style={{ objectFit: "cover" }}
+            <Avatar
+              src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
+              variant="square"
+              sx={{ width: 210, height: 210 }}
             />
-
-            <IconButton id="uploadProfile" component="label">
-              <input
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                hidden
-                accept="image/*"
-                type="file"
-              />
-              <PhotoCameraIcon fontSize="medium" />
-            </IconButton>
           </Box>
           <Box id="profileBox" className="flex-col">
             <Box id="profileDetailContainerBox">
