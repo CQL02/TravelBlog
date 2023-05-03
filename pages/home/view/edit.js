@@ -123,7 +123,7 @@ export default function createIndex() {
       {thisPost && (
         <Box>
           <Typography className="flex justify-center home-title-text">
-            Edit POST
+            EDIT POST
           </Typography>
           <Box className="flex mt-1 justify-center">
             <Typography className="create-title">COUNTRY</Typography>

@@ -16,6 +16,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 import Layout from "../../component/Layout";
 import { useSession } from "next-auth/react";
+import { Avatar } from "@mui/material";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
@@ -33,7 +34,7 @@ export default function SettingsPage() {
   const [userData, setUserData] = useState([]);
 
   const [profilePic, setProfilePic] = useState(
-    "/../public/images/Rectangle 176.png"
+    "https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
   );
   const fileInputRef = useRef(null);
 
@@ -69,7 +70,8 @@ export default function SettingsPage() {
     document.getElementById("country").value = userData.travelCountry;
     document.getElementById("phone").value = userData.phone;
     document.getElementById("instagram").value = userData.instagram;
-    document.getElementById("yearofexperience").value = userData.yearOfExperience;
+    document.getElementById("yearofexperience").value =
+      userData.yearOfExperience;
     document.getElementById("skills").value = userData.skills;
     alert("Data is updated" + JSON.stringify(userData));
     setUserData(userData);
@@ -83,14 +85,14 @@ export default function SettingsPage() {
     document.getElementById("email").value = userData.email;
     document.getElementById("instagram").value = userData.instagram;
     document.getElementById("country").value = userData.travelCountry;
-    document.getElementById("yearofexperience").value = userData.yearOfExperience;
+    document.getElementById("yearofexperience").value =
+      userData.yearOfExperience;
     document.getElementById("skills").value = userData.skills;
   };
 
   const router = useRouter();
 
   useEffect(() => {
-
     if (session?.user) {
       const fetchUserData = async () => {
         try {
@@ -102,14 +104,13 @@ export default function SettingsPage() {
           setUserData(filterUser[0]);
         } catch (error) {
           console.error("Error fetching data: ", error);
-        } 
+        }
       };
       fetchUserData();
       setValue();
-      console.log("usedata", userData)
-    }
-    else {
-      console.log("session undefined")
+      console.log("usedata", userData);
+    } else {
+      console.log("session undefined");
     }
   }, [session]);
 
@@ -156,13 +157,11 @@ export default function SettingsPage() {
         <Box id="rightBox">
           <Box id="profileBox">
             <Box id="imageBox" position="relative" display="inline-block">
-              <Image
+              <Avatar
                 id="profileImage"
                 src={profilePic}
-                alt="Profile picture"
-                width={210}
-                height={210}
-                style={{ objectFit: "cover" }}
+                variant="square"
+                sx={{ width: 210, height: 210, objectFit: "cover" }}
               />
 
               <IconButton
@@ -190,7 +189,7 @@ export default function SettingsPage() {
                   name="username"
                   className="detailsInput"
                   onChange={handleOnChange}
-                  value = {userData.username}
+                  value={userData.username}
                 ></input>
               </Box>
 
@@ -202,7 +201,7 @@ export default function SettingsPage() {
                   name="location"
                   className="detailsInput"
                   onChange={handleOnChange}
-                  value = {userData.location}
+                  value={userData.location}
                 ></input>
               </Box>
 
@@ -214,7 +213,7 @@ export default function SettingsPage() {
                   name="job"
                   className="detailsInput"
                   onChange={handleOnChange}
-                  value = {userData.job}
+                  value={userData.job}
                 ></input>
               </Box>
             </Box>
@@ -244,7 +243,7 @@ export default function SettingsPage() {
                   name="phone"
                   className="input"
                   onChange={handleOnChange}
-                  value = {userData.phone}
+                  value={userData.phone}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -257,7 +256,7 @@ export default function SettingsPage() {
                   name="email"
                   className="input"
                   onChange={handleOnChange}
-                  value = {userData.email}
+                  value={userData.email}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -270,7 +269,7 @@ export default function SettingsPage() {
                   name="instagram"
                   className="input"
                   onChange={handleOnChange}
-                  value = {userData.instagram}
+                  value={userData.instagram}
                 />
               </Box>
             </Box>
@@ -290,7 +289,7 @@ export default function SettingsPage() {
                   className="input"
                   size={30}
                   onChange={handleOnChange}
-                  value = {userData.travelCountry}
+                  value={userData.travelCountry}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -304,7 +303,7 @@ export default function SettingsPage() {
                   className="input"
                   size={30}
                   onChange={handleOnChange}
-                  value = {userData.yearOfExperience}
+                  value={userData.yearOfExperience}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -318,7 +317,7 @@ export default function SettingsPage() {
                   className="input"
                   size={30}
                   onChange={handleOnChange}
-                  value = {userData.skills}
+                  value={userData.skills}
                 />
               </Box>
             </Box>

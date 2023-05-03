@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import BlogListView from "@/component/BlogListView";
+import { useRouter } from "next/router";
 
 export default function ViewPostsPage() {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [posts, setPosts] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -62,7 +64,7 @@ export default function ViewPostsPage() {
         <Avatar
           alt={username}
           src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
-          sx={{ width: 80, height: 80, marginTop: 3 }}
+          sx={{ width: 80, height: 80, marginTop: 3, cursor: "pointer" }}
           onClick={() => router.push("/profile")}
         />
       </div>
