@@ -2,7 +2,6 @@ import { Button, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Layout from "../../component/Layout";
-import axios from "axios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import BlogListView from "@/component/BlogListView";
@@ -17,19 +16,27 @@ export default function SearchCountry() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/postdata.json");
-        setData(response.data);
-        setIsLoading(false);
+        const response = await fetch(
+          `http://localhost:8080/view/post/search/${search}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setData(data);
+          setIsLoading(false);
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
     fetchData();
-  }, []);
-
-  const filteredData = data.filter(({ title }) =>
-    title.toLowerCase().includes(search?.toLowerCase())
-  );
+  }, [search]);
 
   return (
     <Layout>
@@ -45,32 +52,20 @@ export default function SearchCountry() {
       {isLoading ? (
         <p>Loading...</p>
       ) : data.length > 0 ? (
-        filteredData.map(
-          ({
-            id,
-            image,
-            country,
-            title,
-            username,
-            date,
-            like,
-            view,
-            rating,
-          }) => (
-            <BlogListView
-              key={id}
-              id={id}
-              image={image}
-              country={country}
-              title={title}
-              username={username}
-              date={date}
-              like={like}
-              view={view}
-              rating={rating}
-            />
-          )
-        )
+        data.map((data) => (
+          <BlogListView
+            key={data.post_id}
+            id={data.post_id}
+            image={data.post_image}
+            country={data.post_country}
+            title={data.post_title}
+            username={data.username}
+            date={data.post_time}
+            like={data.total_likes}
+            view={data.total_views}
+            rating={data.average_rating}
+          />
+        ))
       ) : (
         <p>No data found</p>
       )}

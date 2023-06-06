@@ -6,15 +6,12 @@ import "@/styles/create.css";
 import "@/styles/settings.css";
 import "@/styles/viewPost.css";
 import "@/styles/userprofile.css";
-import { SessionProvider } from "next-auth/react";
+import { UserProvider } from "../component/auth";
 
-export default function App({
-  Component,
-  pageProps: { session, ...pageProps },
-}) {
+export default function App({ Component, pageProps }) {
   return (
-    <SessionProvider session={session}>
+    <UserProvider>
       <Component {...pageProps} />
-    </SessionProvider>
+    </UserProvider>
   );
 }

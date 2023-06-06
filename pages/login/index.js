@@ -3,11 +3,11 @@ import PersonIcon from "@mui/icons-material/Person";
 import HttpsIcon from "@mui/icons-material/Https";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { IconButton } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { UserContext } from "@/component/auth";
+import { useContext } from "react";
 
 export default function MainPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +15,7 @@ export default function MainPage() {
     setShowPassword(event);
   };
 
+  const { loginUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -23,14 +24,30 @@ export default function MainPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const result = await signIn("credentials", {
-        username: username,
-        password: password,
-        redirect: true,
-        callbackUrl: "/home",
-      });
+      const response = await fetch(
+        `http://localhost:8080/auth/login?username=${username}&user_password=${password}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data[0].user_id !== undefined) {
+          const user = { user_id: data[0].user_id, username: username };
+          localStorage.setItem("user", JSON.stringify(user));
+          loginUser(user);
+          console.log(user);
+          router.push("/home");
+        }
+      } else {
+        console.error("Login failed");
+      }
     } catch (error) {
-      setErrorMessage(error.message);
+      setErrorMessage("WRONG PASSWORD OR USERNAME");
     }
   };
 
@@ -46,15 +63,6 @@ export default function MainPage() {
           TRAVEL NOW
         </div>
         <div className="text-center font-normal text-2xl basic-1/2">LOGIN</div>
-        {/* <div className="inline-block align-right text-right text-sky-900 w-[500px]">
-          <a
-            href="#"
-            className="text-[15px] text-right hover:bg-slate-100 rounded-[10px] px-1 py-0.5  mb-0.5"
-          >
-            <HelpOutlineIcon className="text-[20px] mr-[5px] align-bottom" />
-            Need help?
-          </a>
-        </div> */}
 
         <div className="rounded-2xl shadow-2xl flex w-full md:w-auto bg-blue-200">
           <div className="flex flex-col items-center m-8">
@@ -112,15 +120,14 @@ export default function MainPage() {
             </div>
 
             <div>
-              <a
-                href="#"
+              <button
                 className="bg-gray-100 w-96 p-2 flex rounded-2xl font-bold justify-center"
                 onClick={handleSubmit}
               >
                 LOG IN
-              </a>
+              </button>
             </div>
-            {errorMessage && <p>{errorMessage}</p>}
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           </div>
         </div>
 

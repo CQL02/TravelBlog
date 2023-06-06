@@ -11,30 +11,91 @@ import CreateIcon from "@mui/icons-material/Create";
 import Layout from "@/component/Layout";
 import Chart from "@/component/Chart";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "@/component/auth";
+import { useRouter } from "next/router";
 
 export default function FirstProfilePage() {
+  const { user } = useContext(UserContext);
+  const router = useRouter();
+  const { userid } = router.query;
   const [userData, setUserData] = useState([]);
-  const { data: session } = useSession();
+  const [userDesc, setUserDesc] = useState([]);
+  const [userReview, setUserReview] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const convertBufferToBase64 = (buffer) => {
+    const base64String = Buffer.from(buffer).toString("base64");
+    return `data:image/jpeg;base64,${base64String}`;
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await axios.get("/profiledata.json");
-        setUserData(
-          response.data.filter((item) => item.email === session.user.email)
+        const response = await fetch(`http://localhost:8080/users/${userid}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    const fetchUserDesc = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/users/desc/${userid}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserDesc(data[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    const fetchAvgRating = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/users/review/${userid}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserReview(data[0][0]);
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
-  }, [session]);
+
+    fetchUserData();
+    fetchUserDesc();
+    fetchAvgRating();
+  }, [userid]);
 
   if (loading) {
     return (
@@ -46,29 +107,26 @@ export default function FirstProfilePage() {
 
   return (
     <Layout>
-      {userData.length > 0 && (
+      {userData && userData.user_image && (
         <Container maxWidth="md">
           <Box className="details" pt={4} pb={4} ml={3}>
             <Avatar
-              src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
+              src={convertBufferToBase64(userData.user_image)}
               className="userprofilepic"
               variant="square"
             />
             <Box ml={2}>
               <Typography variant="h5" fontWeight="bold">
-                {userData[0].username}
+                {userData.username}
               </Typography>
 
               <Box className="details">
                 <LocationOnIcon color="primary" sx={{ fontSize: "20px" }} />
                 <Typography variant="subtitle1" color="textSecondary">
-                  {userData[0].location}
+                  {userDesc.user_country}
                 </Typography>
               </Box>
 
-              <Typography variant="subtitle1" color="#59ADD7">
-                {userData[0].job}
-              </Typography>
               <Box display="flex" alignItems="flex-end">
                 <br />
                 <div style={{ marginTop: "5px" }}>
@@ -81,12 +139,12 @@ export default function FirstProfilePage() {
                       color="textPrimary"
                       fontWeight="bold"
                     >
-                      {userData[0].rating.toFixed(1)}
+                      {parseFloat(userReview.rating).toFixed(1)}
                     </Typography>
                     <Rating
                       name="rating"
                       size="large"
-                      value={parseFloat(userData[0].rating)}
+                      value={parseFloat(userReview.rating)}
                       precision={0.5}
                       readOnly
                       style={{ marginLeft: "8px", color: "#AED2E4" }}
@@ -119,15 +177,15 @@ export default function FirstProfilePage() {
               <Box className="ml-[25px] mb-[15px]">
                 <div className="details">
                   <Typography className="title">Phone:</Typography>
-                  <Typography color="primary">{userData[0].phone}</Typography>
+                  <Typography color="primary">{userDesc.user_phone}</Typography>
                 </div>
                 <div className="details">
                   <Typography className="title">E-mail:</Typography>
-                  <Typography>{userData[0].email}</Typography>
+                  <Typography>{userData.user_email}</Typography>
                 </div>
                 <div className="details">
                   <Typography className="title">Instagram:</Typography>
-                  <Typography>{userData[0].instagram}</Typography>
+                  <Typography>{userDesc.user_ig}</Typography>
                 </div>
               </Box>
 
@@ -139,34 +197,40 @@ export default function FirstProfilePage() {
                 <div className="details">
                   <Typography className="title">Country：</Typography>
                   <Typography color="primary">
-                    {userData[0].travelCountry}
+                    {userDesc.user_country_travelled}
                   </Typography>
                 </div>
                 <div className="details">
                   <Typography className="title">
                     Year of Experiences:
                   </Typography>
-                  <Typography>{userData[0].yearOfExperience}</Typography>
+                  <Typography>{userDesc.user_yoe}</Typography>
                 </div>
                 <div className="details">
                   <Typography className="title">Skills:</Typography>
-                  <Typography>{userData[0].skills}</Typography>
+                  <Typography>{userDesc.user_skills}</Typography>
                 </div>
               </Box>
             </Box>
           </Grid>
 
-          <Divider style={{ margin: "15px 0" }} />
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <InsertChartOutlinedIcon color="primary" sx={{ ml: "20px" }} />
-            <Typography variant="subtitle1" style={{ marginLeft: "8px" }}>
-              Overview
-            </Typography>
-          </div>
+          {parseInt(userid) === parseInt(user?.user_id) ? (
+            <>
+              <Divider style={{ margin: "15px 0" }} />
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <InsertChartOutlinedIcon color="primary" sx={{ ml: "20px" }} />
+                <Typography variant="subtitle1" style={{ marginLeft: "8px" }}>
+                  Overview
+                </Typography>
+              </div>
 
-          <Divider style={{ margin: "15px 0" }} />
+              <Divider style={{ margin: "15px 0" }} />
 
-          <Chart overallRate={userData[0].rating.toFixed(1)} />
+              <Chart overallRate={parseFloat(userReview.rating).toFixed(1)} />
+            </>
+          ) : (
+            <></>
+          )}
         </Container>
       )}
     </Layout>

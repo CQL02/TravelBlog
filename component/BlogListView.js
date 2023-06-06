@@ -44,11 +44,16 @@ export default function bloglistview(props) {
   const areUSureDelete = (choose) => {
     if (choose) {
       //suppose to call api
-      onDelete(id);
+      // onDelete(id);
       handleDialog("", false);
     } else {
       handleDialog("", false);
     }
+  };
+
+  const convertBufferToBase64 = (buffer) => {
+    const base64String = Buffer.from(buffer).toString("base64");
+    return `data:image/jpeg;base64,${base64String}`;
   };
 
   return (
@@ -68,7 +73,7 @@ export default function bloglistview(props) {
       <Link href={`/home/view?id=${id}`}>
         <Box className="search-country-box" key={id}>
           <img
-            src={image}
+            src={convertBufferToBase64(image)}
             style={{ width: "250px", height: "141px", borderRadius: "10px" }}
           />
           <Box key={id}>
@@ -88,7 +93,7 @@ export default function bloglistview(props) {
                 {username}
               </Typography>
               <Typography className="search-country-helper-text">
-                {date}
+                {new Date(date).toLocaleDateString()}
               </Typography>
             </Box>
 
