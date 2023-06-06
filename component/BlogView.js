@@ -3,13 +3,23 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useRouter } from "next/router";
 import { ArrowBack } from "@mui/icons-material";
-import Link from "next/link";
 
 export default function blogview(props) {
-  const { id, image, title, username, date, like, view, rating, description } =
-    props;
+  const {
+    id,
+    profileImage,
+    image,
+    title,
+    username,
+    date,
+    like,
+    view,
+    rating,
+    description,
+  } = props;
 
   const router = useRouter();
+
   return (
     <Box>
       <Box className="w-[600px] ml-auto mr-auto flex">
@@ -24,13 +34,13 @@ export default function blogview(props) {
       </Typography>
 
       <Box className="view-blog-profile-box">
-        <Avatar src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg" />
+        <Avatar src={profileImage} />
         <Box>
           <Box className="search-country-helper-text-box">
             <Typography>{username}</Typography>
             <Typography
               className="view-blog-profile-view"
-              onClick={() => router.push(`/blog/others?user=${username}`)}
+              onClick={() => router.push(`/blog?userid=${id}`)}
             >
               View Blog
             </Typography>
@@ -39,7 +49,7 @@ export default function blogview(props) {
             className="search-country-helper-text"
             sx={{ pl: "10px" }}
           >
-            {date}
+            {new Date(date).toLocaleDateString()}
           </Typography>
         </Box>
       </Box>

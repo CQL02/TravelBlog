@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Avatar,
   Box,
@@ -13,23 +14,23 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useState, useContext } from "react";
 import { Close } from "@mui/icons-material";
+import { UserContext } from "./auth";
+import { useRouter } from "next/router";
 
 export default function SideNavigation() {
+  const router = useRouter();
+  const { user, logoutUser } = useContext(UserContext);
+
   const [state, setState] = useState(false);
   const toggleDrawer = () => {
     setState(!state);
   };
 
-  const { data: session } = useSession();
-  const router = useRouter();
-
-  const handleSignOut = async () => {
-    await signOut({ callbackUrl: `${window.location.origin}/` }); // specify the callback URL to redirect to
-    router.push("/"); // navigate programmatically to the home page
+  const handleLogout = () => {
+    logoutUser();
+    router.push("/login");
   };
 
   return (
@@ -52,9 +53,11 @@ export default function SideNavigation() {
           variant="square"
           sx={{ width: 250, height: 250 }}
         />
-        <Typography className="drawer-text" align="center">
-          {session?.user?.email}
-        </Typography>
+        {user && (
+          <Typography className="drawer-text" align="center">
+            {user.username}
+          </Typography>
+        )}
         <Box className="drawer">
           <List>
             <ListItemButton href="/create">
@@ -71,7 +74,7 @@ export default function SideNavigation() {
               <ListItemText primary="Settings" />
             </ListItemButton>
 
-            <ListItemButton onClick={handleSignOut}>
+            <ListItemButton onClick={handleLogout}>
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>

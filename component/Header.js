@@ -9,8 +9,11 @@ import SideNav from "./SideNavigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import { UserContext } from "./auth";
 
 export default function Header() {
+  const { user } = useContext(UserContext);
   const [isMobile, setIsMobile] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -78,25 +81,23 @@ export default function Header() {
             </IconButton>
           </Link>
 
-          <Link href="/blog/own">
-            <IconButton
-              variant="text"
-              size="small"
-              sx={{ color: "black", mr: "10px" }}
-            >
-              <SignpostIcon />
-            </IconButton>
-          </Link>
+          <IconButton
+            variant="text"
+            size="small"
+            sx={{ color: "black", mr: "10px" }}
+            onClick={() => router.push(`/blog?userid=${user?.user_id}`)}
+          >
+            <SignpostIcon />
+          </IconButton>
 
-          <Link href="/profile">
-            <IconButton
-              variant="text"
-              size="small"
-              sx={{ color: "black", mr: "10px" }}
-            >
-              <PersonIcon />
-            </IconButton>
-          </Link>
+          <IconButton
+            variant="text"
+            size="small"
+            sx={{ color: "black", mr: "10px" }}
+            onClick={() => router.push(`/profile?userid=${user?.user_id}`)}
+          >
+            <PersonIcon />
+          </IconButton>
         </Box>
       ) : (
         <Box sx={{ marginLeft: "auto" }}>
@@ -114,19 +115,25 @@ export default function Header() {
             </Button>
           </Link>
 
-          <Link href="/blog/own">
-            <Button variant="text" size="small" className="headerButton">
-              <SignpostIcon />
-              MY BLOG
-            </Button>
-          </Link>
+          <Button
+            variant="text"
+            size="small"
+            className="headerButton"
+            onClick={() => router.push(`/blog?userid=${user?.user_id}`)}
+          >
+            <SignpostIcon />
+            MY BLOG
+          </Button>
 
-          <Link href="/profile">
-            <Button variant="text" size="small" className="headerButton">
-              <PersonIcon />
-              PROFILE
-            </Button>
-          </Link>
+          <Button
+            variant="text"
+            size="small"
+            className="headerButton"
+            onClick={() => router.push(`/profile?userid=${user?.user_id}`)}
+          >
+            <PersonIcon />
+            PROFILE
+          </Button>
         </Box>
       )}
     </Box>

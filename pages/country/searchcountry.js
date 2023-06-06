@@ -15,20 +15,25 @@ export default function searchcountry() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/postdata.json");
-        setData(response.data);
+        const response = await fetch(
+          `http://localhost:8080/view/post/country/${country}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setData(data);
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
     fetchData();
-  }, []);
-
-  const filteredData = data.reduce((acc, item) => {
-    if (item.country === country) {
-      acc.push(item);
-    }
-    return acc;
   }, []);
 
   return (
@@ -42,18 +47,18 @@ export default function searchcountry() {
       <Typography className="search-country-main-title" align="center">
         {country}
       </Typography>
-      {filteredData.map((data) => (
+      {data.map((data) => (
         <BlogListView
-          key={data.id}
-          id={data.id}
-          image={data.image}
-          country={data.country}
-          title={data.title}
+          key={data.post_id}
+          id={data.post_id}
+          image={data.post_image}
+          country={data.post_country}
+          title={data.post_title}
           username={data.username}
-          date={data.date}
-          like={data.like}
-          view={data.view}
-          rating={data.rating}
+          date={data.post_time}
+          like={data.total_likes}
+          view={data.total_views}
+          rating={data.average_rating}
         />
       ))}
     </Layout>
