@@ -163,9 +163,13 @@ export default function FirstProfilePage() {
               <Typography variant="subtitle1" style={{ marginLeft: "8px" }}>
                 About
               </Typography>
-              <IconButton style={{ marginLeft: "auto" }} href="/settings">
-                <CreateIcon color="primary" />
-              </IconButton>
+              {parseInt(userid) === parseInt(user?.user_id) ? (
+                <IconButton style={{ marginLeft: "auto" }} href="/settings">
+                  <CreateIcon color="primary" />
+                </IconButton>
+              ) : (
+                <></>
+              )}
             </div>
 
             <Divider style={{ margin: "8px 0" }} />

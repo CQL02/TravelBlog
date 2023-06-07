@@ -9,9 +9,10 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Box, Rating, Typography } from "@mui/material";
+import { useContext } from "react";
+import { UserContext } from "./auth";
 
 ChartJS.register(
   CategoryScale,
@@ -25,6 +26,7 @@ ChartJS.register(
 
 export default function MyChart(props) {
   const { overallRate } = props;
+  const { user } = useContext(UserContext);
 
   const today = new Date();
   const likeData = [];
@@ -42,8 +44,20 @@ export default function MyChart(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/postdata.json");
-        setPostData(response.data);
+        const response = await fetch(
+          `http://localhost:8080/stats/dailyStats/${user?.user_id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setPostData(data);
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -51,35 +65,9 @@ export default function MyChart(props) {
     fetchData();
   }, []);
 
-  const getLikeData = postdata.reduce((acc, item) => {
-    if (item.like) {
-      const like = parseInt(item.like);
-      if (!isNaN(like)) {
-        const index = acc.findIndex((obj) => obj.date === item.date);
-        if (index !== -1) {
-          acc[index].likes += like;
-        }
-      }
-    }
-    return acc;
-  }, likeData);
-
-  const getViewData = postdata.reduce((acc, item) => {
-    if (item.view) {
-      const view = parseInt(item.view);
-      if (!isNaN(view)) {
-        const index = acc.findIndex((obj) => obj.date === item.date);
-        if (index !== -1) {
-          acc[index].views += view;
-        }
-      }
-    }
-    return acc;
-  }, viewData);
-
   const getMaxY = Math.max(
-    Math.max(...getViewData.map((data) => data.views)),
-    Math.max(...getLikeData.map((data) => data.likes))
+    Math.max(...postdata.map((data) => data.total_views)),
+    Math.max(...postdata.map((data) => data.total_likes))
   );
   const roundedMaxY = Math.ceil(getMaxY / 100000) * 100000;
   const stepSize = roundedMaxY / 5;
@@ -96,18 +84,6 @@ export default function MyChart(props) {
       y: {
         min: 0,
       },
-      // yAxes: [
-      //   {
-      //     ticks: {
-      //       beginAtZero: true,
-      //       max: roundedMaxY,
-      //       stepSize: stepSize,
-      //       callback: function (value, index, values) {
-      //         return value >= 1000 ? value / 1000 + "k" : value;
-      //       },
-      //     },
-      //   },
-      // ],
     },
   };
 
@@ -116,13 +92,13 @@ export default function MyChart(props) {
     datasets: [
       {
         label: "Likes",
-        data: getLikeData.map((data) => data.likes),
+        data: postdata.map((data) => data.total_likes),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
         label: "View",
-        data: getViewData.map((data) => data.views),
+        data: postdata.map((data) => data.total_views),
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
@@ -142,12 +118,12 @@ export default function MyChart(props) {
     return num;
   };
 
-  const totalLike = getLikeData.reduce((sum, item) => {
-    return sum + item.likes;
+  const totalLike = postdata.reduce((sum, item) => {
+    return sum + item.total_likes;
   }, 0);
 
-  const totalView = getViewData.reduce((sum, item) => {
-    return sum + item.views;
+  const totalView = postdata.reduce((sum, item) => {
+    return sum + item.total_views;
   }, 0);
 
   return (
