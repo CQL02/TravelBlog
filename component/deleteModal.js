@@ -1,4 +1,38 @@
-function Dialog({ message, onDialog }) {
+import { useState } from "react";
+
+function Dialog({ message, onDialog, post_id }) {
+  const [loading, setLoading] = useState(false);
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://localhost:8080/view/post/delete/${post_id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        alert("Post deleted successfully");
+        window.location.reload();
+      } else {
+        const data = await response.json();
+        if (data && data.error) {
+          alert(`Failed to delete post: ${data.error}`);
+        } else {
+          alert("Failed to delete post");
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      alert("An error occurred while deleting the post");
+    } finally {
+      setLoading(false);
+      onDialog(false);
+    }
+  };
+
   return (
     <div
       style={{
@@ -27,12 +61,20 @@ function Dialog({ message, onDialog }) {
           borderRadius: "10px",
         }}
       >
-        <h3 stlye={{ color: "#111", fontSize: "16px" }}>{message}</h3>
+        <h3 style={{ color: "#111", fontSize: "16px" }}>{message}</h3>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <button onClick={() => onDialog(true)} className="delete-button-yes">
-            YES
+          <button
+            onClick={handleDelete}
+            className="delete-button-yes"
+            disabled={loading}
+          >
+            {loading ? "Deleting..." : "YES"}
           </button>
-          <button onClick={() => onDialog(false)} className="delete-button-no">
+          <button
+            onClick={() => onDialog(false)}
+            className="delete-button-no"
+            disabled={loading}
+          >
             NO
           </button>
         </div>
@@ -40,4 +82,5 @@ function Dialog({ message, onDialog }) {
     </div>
   );
 }
+
 export default Dialog;

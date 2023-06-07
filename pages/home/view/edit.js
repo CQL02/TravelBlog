@@ -12,7 +12,6 @@ import {
 import { useState, useRef, useEffect } from "react";
 import ImageIcon from "@mui/icons-material/Image";
 import { useRouter } from "next/router";
-import axios from "axios";
 
 const countries = [
   "Antarctica",
@@ -38,30 +37,51 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-export default function createIndex() {
-  const [image, setImage] = useState(null);
-  const [thisPost, setThisPost] = useState([]);
-  const fileInputRef = useRef();
+export default function CreateIndex() {
   const router = useRouter();
-
+  const fileInputRef = useRef();
   const { id } = router.query;
-
-  const handleSelectChange = (event) => {
-    const selectedCountry = event.target.value;
-    setThisPost((prevPost) => ({
-      ...prevPost,
-      country: selectedCountry,
-    }));
-  };
+  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [thisPost, setThisPost] = useState({});
+  const [country, setCountry] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/postdata.json");
-        const filteredData = response.data.filter(
-          (item) => item.id === parseInt(id)
-        );
-        setThisPost(filteredData[0]);
+        const response = await fetch(`http://localhost:8080/view/post/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (
+            Array.isArray(data) &&
+            data.length > 0 &&
+            data[0].post_image &&
+            data[0].post_image.data
+          ) {
+            const imageData = data[0].post_image.data;
+            const imageBuffer = Buffer.from(imageData);
+            const imageType = data[0].post_image.type;
+            const imageFileName = "post_image";
+            const imageFile = new File([imageBuffer], imageFileName, {
+              type: imageType,
+            });
+
+            const reader = new FileReader();
+            reader.onload = () => {
+              setImage(reader.result);
+            };
+            reader.readAsDataURL(imageFile);
+            setImageFile(imageFile);
+          }
+          setCountry(data[0]?.post_country);
+          setThisPost(data[0]);
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -69,53 +89,95 @@ export default function createIndex() {
     fetchData();
   }, [id]);
 
-  function handleImageChange(event) {
+  const handleSelectChange = (event) => {
+    const selectedCountry = event.target.value;
+    setCountry(selectedCountry);
+  };
+
+  const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (!file || !(file instanceof Blob)) {
       console.error("Invalid file selected");
       return;
     }
     const reader = new FileReader();
-    reader.onloadend = () => {
+    reader.onload = () => {
       setImage(reader.result);
     };
     reader.readAsDataURL(file);
-  }
+    setImageFile(file);
+  };
 
-  function handleChipClick() {
+  const handleChipClick = () => {
     fileInputRef.current.click();
-  }
+  };
 
-  function handleOpenImage() {
+  const handleOpenImage = () => {
     if (image) {
       const newWindow = window.open();
       newWindow.document.write(
         `<img src="${image}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`
       );
     }
-  }
+  };
 
-  function handleResetImage() {
+  const handleResetImage = () => {
     setImage(null);
-  }
+    setImageFile(null);
+    fileInputRef.current.value = "";
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    const newUserData = { ...thisPost, [name]: value };
-    setThisPost(newUserData);
+    const newPostData = { ...thisPost, [name]: value };
+    setThisPost(newPostData);
   };
 
-  const handleOnClick = (event) => {
+  const handleOnClick = async (event) => {
     event.preventDefault();
+
     const updatedPost = {
-      ...thisPost,
-      country: document.getElementById("country")?.value ?? "",
       title: document.getElementById("title")?.value ?? "",
       description: document.getElementById("description")?.value ?? "",
     };
 
-    alert("Post is updated" + JSON.stringify(updatedPost));
-    setThisPost(updatedPost);
+    if (!imageFile) {
+      alert("Please select an image");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", imageFile);
+    formData.append("country", country);
+
+    for (const key in updatedPost) {
+      formData.append(key, updatedPost[key]);
+    }
+
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/view/posts/update/${id}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        alert("Post updated successfully");
+        setThisPost(updatedPost);
+        router.back();
+      } else {
+        alert("Failed to update post");
+      }
+    } catch (error) {
+      console.error("Error updating post: ", error);
+      alert("An error occurred while updating the post");
+    }
   };
 
   return (
@@ -128,11 +190,12 @@ export default function createIndex() {
           <Box className="flex mt-1 justify-center">
             <Typography className="create-title">COUNTRY</Typography>
             <StyledTextField
+              id="country"
               className="create-input"
               select
               size="small"
-              value={thisPost.country}
               onChange={handleSelectChange}
+              value={country}
             >
               {countries.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -147,7 +210,7 @@ export default function createIndex() {
             <InputBase
               id="title"
               className="create-input"
-              defaultValue={thisPost.title}
+              defaultValue={thisPost.post_title}
               onChange={handleInputChange}
             />
           </Box>
@@ -159,7 +222,7 @@ export default function createIndex() {
               multiline
               rows={10}
               fullWidth
-              defaultValue={thisPost.description}
+              defaultValue={thisPost.post_description}
               onChange={handleInputChange}
             />
           </Box>
@@ -196,10 +259,7 @@ export default function createIndex() {
               <Button
                 className="headerButton"
                 size="small"
-                onClick={(event) => {
-                  handleOnClick(event);
-                  router.back();
-                }}
+                onClick={handleOnClick}
               >
                 SAVE
               </Button>

@@ -3,18 +3,16 @@ import {
   Box,
   Button,
   Chip,
-  InputAdornment,
   InputBase,
   MenuItem,
-  OutlinedInput,
-  Select,
   TextField,
   Typography,
   styled,
 } from "@mui/material";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import ImageIcon from "@mui/icons-material/Image";
 import { useRouter } from "next/router";
+import { UserContext } from "@/component/auth";
 
 const countries = [
   "Antarctica",
@@ -41,6 +39,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 export default function createIndex() {
+  const { user } = useContext(UserContext);
   const router = useRouter();
   const [image, setImage] = useState(null);
   const [getTitle, setGetTitle] = useState("");
@@ -66,11 +65,7 @@ export default function createIndex() {
       console.error("Invalid file selected");
       return;
     }
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImage(reader.result);
-    };
-    reader.readAsDataURL(file);
+    setImage(file);
   }
 
   function handleChipClick() {
@@ -88,13 +83,34 @@ export default function createIndex() {
 
   function handleResetImage() {
     setImage(null);
+    fileInputRef.current.value = "";
   }
 
-  const onPostClick = () => {
-    console.log(getTitle);
-    console.log(getSelectedCountry);
-    console.log(getDescription);
-    router.back();
+  const onPostClick = async () => {
+    const fd = new FormData();
+    fd.append("user_id", user?.user_id);
+    fd.append("title", getTitle);
+    fd.append("image", image);
+    fd.append("description", getDescription);
+    fd.append("country", getSelectedCountry);
+
+    try {
+      const response = await fetch("http://localhost:8080/view/add", {
+        method: "POST",
+        body: fd,
+      });
+
+      if (response.ok) {
+        const json = await response.json();
+        console.log(json.image);
+      } else {
+        console.error("Failed to fetch data:", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      router.back();
+    }
   };
 
   return (

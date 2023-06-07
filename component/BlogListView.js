@@ -115,7 +115,11 @@ export default function bloglistview(props) {
         </Box>
       </Link>
       {dialog.isLoading && (
-        <Dialog onDialog={areUSureDelete} message={dialog.message} />
+        <Dialog
+          onDialog={areUSureDelete}
+          message={dialog.message}
+          post_id={id}
+        />
       )}
     </Box>
   );

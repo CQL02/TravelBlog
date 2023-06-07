@@ -67,7 +67,7 @@ export default function ViewPostsPage() {
 
   useEffect(() => {
     if (userid && user?.user_id) {
-      if (userid === user.user_id) {
+      if (parseInt(userid) === parseInt(user.user_id)) {
         setIsOwn(true);
       } else {
         setIsOwn(false);
