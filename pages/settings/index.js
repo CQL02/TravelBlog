@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useRouter } from "next/router";
 
 import Divider from "@mui/material/Divider";
@@ -15,35 +15,34 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 import Layout from "../../component/Layout";
-import { useSession } from "next-auth/react";
 import { Avatar } from "@mui/material";
+import { UserContext } from "@/component/auth";
+import { DeleteForever } from "@mui/icons-material";
 
 export default function SettingsPage() {
-  const { data: session } = useSession();
-
+  const router = useRouter();
+  const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
 
-  // const [username, setUsername] = useState()
-  // const [email, setEmail] = useState()
-  // const [country, setCountry] = useState()
-  // const [phone, setUsername] = useState()
-  // const [instagram, setUsername] = useState()
-  // const [yearofexperience, setUsername] = useState()
-  // const [skills, setUsername] = useState()
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [country, setCountry] = useState("");
+  const [phone, setPhone] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [yoe, setYoe] = useState("");
+  const [skills, setSkills] = useState("");
+  const [countryTravelled, setCountryTravelled] = useState("");
 
-  const [userData, setUserData] = useState([]);
-
-  const [profilePic, setProfilePic] = useState(
-    "https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
-  );
+  const [profilePic, setProfilePic] = useState("");
   const fileInputRef = useRef(null);
 
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
+  const convertBufferToBase64 = (buffer) => {
+    const base64String = Buffer.from(buffer).toString("base64");
+    return `data:image/jpeg;base64,${base64String}`;
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  const handleUploadClick = (event) => {
+    const file = event?.target?.files?.[0];
 
     if (file) {
       const reader = new FileReader();
@@ -56,63 +55,133 @@ export default function SettingsPage() {
     }
   };
 
-  const handleOnChange = (event) => {
-    const { name, value } = event.target;
-    const newUserData = { ...userData, [name]: value };
-    setUserData(newUserData);
-    console.log(userData);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.addEventListener("load", () => {
+        setProfilePic(reader.result);
+      });
+
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleOnClick = (event) => {
+  const handleOnClick = async (event) => {
     event.preventDefault();
-    document.getElementById("username-name").value = userData.username;
-    document.getElementById("email").value = userData.email;
-    document.getElementById("country").value = userData.travelCountry;
-    document.getElementById("phone").value = userData.phone;
-    document.getElementById("instagram").value = userData.instagram;
-    document.getElementById("yearofexperience").value =
-      userData.yearOfExperience;
-    document.getElementById("skills").value = userData.skills;
-    alert("Data is updated" + JSON.stringify(userData));
-    setUserData(userData);
-  };
 
-  const setValue = () => {
-    document.getElementById("username-name").value = userData.username;
-    document.getElementById("location").value = userData.location;
-    document.getElementById("job").value = userData.job;
-    document.getElementById("phone").value = userData.phone;
-    document.getElementById("email").value = userData.email;
-    document.getElementById("instagram").value = userData.instagram;
-    document.getElementById("country").value = userData.travelCountry;
-    document.getElementById("yearofexperience").value =
-      userData.yearOfExperience;
-    document.getElementById("skills").value = userData.skills;
-  };
+    const imageData = profilePic.data;
+    const imageBuffer = Buffer.from(imageData);
+    const imageType = profilePic.type;
+    const imageFileName = "profile_image";
+    const imageFile = new File([imageBuffer], imageFileName, {
+      type: imageType,
+    });
 
-  const router = useRouter();
+    const formData1 = new FormData();
+    formData1.append("username", username);
+    formData1.append("email", email);
+    formData1.append("image", imageFile);
+
+    const formData2 = new FormData();
+    formData2.append("country", country);
+    formData2.append("phone", phone);
+    formData2.append("instagram", instagram);
+    formData2.append("country_travelled", countryTravelled);
+    formData2.append("yoe", yoe);
+    formData2.append("skills", skills);
+
+    try {
+      const response1 = await fetch(
+        `http://localhost:8080/users/updateDetails/${user?.user_id}`,
+        {
+          method: "PUT",
+          body: formData1,
+        }
+      );
+
+      const response2 = await fetch(
+        `http://localhost:8080/users/updateProfile/${user?.user_id}`,
+        {
+          method: "PUT",
+          body: formData2,
+        }
+      );
+
+      console.log(formData2.toString());
+      if (response1.ok && response2.ok) {
+        alert("Successfully Update");
+        setUsername(username);
+        setEmail(email);
+        setProfilePic(profilePic);
+        setCountry(country);
+        setInstagram(instagram);
+        setPhone(phone);
+        setSkills(skills);
+        setYoe(yoe);
+        setCountryTravelled(countryTravelled);
+      } else {
+        alert("Failed to update post");
+      }
+    } catch (error) {
+      console.error("Error updating post: ", error);
+      alert("An error occurred while updating the post");
+    }
+  };
 
   useEffect(() => {
-    if (session?.user) {
-      const fetchUserData = async () => {
-        try {
-          const response = await axios.get("/profiledata.json");
-          const data = response.data;
-          const filterUser = data.filter(
-            (user) => user.email === session.user.email
-          );
-          setUserData(filterUser[0]);
-        } catch (error) {
-          console.error("Error fetching data: ", error);
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/users/${user?.user_id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setUsername(data[0]?.username);
+          setEmail(data[0]?.user_email);
+          setProfilePic(data[0]?.user_image);
         }
-      };
-      fetchUserData();
-      setValue();
-      console.log("usedata", userData);
-    } else {
-      console.log("session undefined");
-    }
-  }, [session]);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    const fetchUserDesc = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/users/desc/${user?.user_id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setCountry(data[0]?.user_country);
+          setInstagram(data[0]?.user_ig);
+          setPhone(data[0]?.user_phone);
+          setSkills(data[0]?.user_skills);
+          setYoe(data[0]?.user_yoe);
+          setCountryTravelled(data[0]?.user_country_travelled);
+        }
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+    fetchUserData();
+    fetchUserDesc();
+  }, [user?.user_id]);
 
   return (
     <Layout>
@@ -152,25 +221,38 @@ export default function SettingsPage() {
             <FeedbackIcon className="mr-[10px]" fontSize="medium" />
             FEEDBACK
           </Button>
+          <Button
+            onClick={() => {
+              router.push("./settings/deleteAccount");
+            }}
+            className="mr-auto navigationButton"
+            variant="text"
+            size="small"
+            fullWidth
+          >
+            <DeleteForever className="mr-[10px]" fontSize="medium" />
+            DELETE ACCOUNT
+          </Button>
         </Box>
         <Divider orientation="vertical" flexItem variant="middle" />
         <Box id="rightBox">
           <Box id="profileBox">
             <Box id="imageBox" position="relative" display="inline-block">
-              <Avatar
-                id="profileImage"
-                src={profilePic}
-                variant="square"
-                sx={{ width: 210, height: 210, objectFit: "cover" }}
-              />
+              {profilePic && (
+                <Avatar
+                  id="profileImage"
+                  src={convertBufferToBase64(profilePic)}
+                  variant="square"
+                  sx={{ width: 210, height: 210, objectFit: "cover" }}
+                />
+              )}
 
               <IconButton
-                // onClick={handleUploadClick}
+                onClick={handleUploadClick}
                 id="uploadProfile"
                 component="label"
               >
                 <input
-                  ref={fileInputRef}
                   onChange={handleFileChange}
                   hidden
                   accept="image/*"
@@ -188,8 +270,8 @@ export default function SettingsPage() {
                   type="text"
                   name="username"
                   className="detailsInput"
-                  onChange={handleOnChange}
-                  value={userData.username}
+                  onChange={(event) => setUsername(event.target.value)}
+                  value={username}
                 ></input>
               </Box>
 
@@ -200,20 +282,8 @@ export default function SettingsPage() {
                   type="text"
                   name="location"
                   className="detailsInput"
-                  onChange={handleOnChange}
-                  value={userData.location}
-                ></input>
-              </Box>
-
-              <Box className="profileDetailsBox" display="flex">
-                <Typography className="details">JOB:</Typography>
-                <input
-                  id="job"
-                  type="text"
-                  name="job"
-                  className="detailsInput"
-                  onChange={handleOnChange}
-                  value={userData.job}
+                  onChange={(event) => setCountry(event.target.value)}
+                  value={country}
                 ></input>
               </Box>
             </Box>
@@ -242,8 +312,8 @@ export default function SettingsPage() {
                   type="text"
                   name="phone"
                   className="input"
-                  onChange={handleOnChange}
-                  value={userData.phone}
+                  onChange={(event) => setPhone(event.target.value)}
+                  value={phone}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -255,8 +325,8 @@ export default function SettingsPage() {
                   type="text"
                   name="email"
                   className="input"
-                  onChange={handleOnChange}
-                  value={userData.email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  value={email}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -268,8 +338,8 @@ export default function SettingsPage() {
                   type="text"
                   name="instagram"
                   className="input"
-                  onChange={handleOnChange}
-                  value={userData.instagram}
+                  onChange={(event) => setInstagram(event.target.value)}
+                  value={instagram}
                 />
               </Box>
             </Box>
@@ -288,8 +358,8 @@ export default function SettingsPage() {
                   name="travelCountry"
                   className="input"
                   size={30}
-                  onChange={handleOnChange}
-                  value={userData.travelCountry}
+                  onChange={(event) => setCountryTravelled(event.target.value)}
+                  value={countryTravelled}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -302,8 +372,8 @@ export default function SettingsPage() {
                   name="yearOfExperience"
                   className="input"
                   size={30}
-                  onChange={handleOnChange}
-                  value={userData.yearOfExperience}
+                  onChange={(event) => setYoe(event.target.value)}
+                  value={yoe}
                 />
               </Box>
               <Box className="flex my-[5px]">
@@ -316,8 +386,8 @@ export default function SettingsPage() {
                   name="skills"
                   className="input"
                   size={30}
-                  onChange={handleOnChange}
-                  value={userData.skills}
+                  onChange={(event) => setSkills(event.target.value)}
+                  value={skills}
                 />
               </Box>
             </Box>

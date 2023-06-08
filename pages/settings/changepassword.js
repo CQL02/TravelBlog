@@ -1,123 +1,107 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useRouter } from "next/router";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Image from "next/image";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import FeedbackIcon from "@mui/icons-material/Feedback";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
-import { useSession, signIn, signOut } from "next-auth/react";
-
 import Layout from "../../component/Layout";
 import { Avatar } from "@mui/material";
+import { UserContext } from "@/component/auth";
+import { DeleteForever } from "@mui/icons-material";
 
 export default function SettingsChangePasswordPage() {
-  const { data: session } = useSession();
-
-  const [userData, setUserData] = useState({
-    username: "failed",
-    email: "failed@gmail.com",
-    password: "failed",
-    location: "failed, USA",
-    job: "failed Blogger",
-    rating: 4.5,
-    phone: "failed",
-    instagram: "aliabu_bin",
-    travelCountry: "Malaysia, failed",
-    yearOfExperience: "failed years",
-    skills: "failed, Diving and Video Creating",
-  });
-
-  const [profilePic, setProfilePic] = useState(
-    "/../public/images/Rectangle 176.png"
-  );
-  const fileInputRef = useRef(null);
+  const { user } = useContext(UserContext);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [profilePic, setProfilePic] = useState("");
+  const [userPass, setUserPass] = useState("");
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.addEventListener("load", () => {
-        setProfilePic(reader.result);
-      });
-
-      reader.readAsDataURL(file);
-    }
+  const convertBufferToBase64 = (buffer) => {
+    const base64String = Buffer.from(buffer).toString("base64");
+    return `data:image/jpeg;base64,${base64String}`;
   };
 
-  const handleOnClick = (event) => {
+  const handleOnClick = async (event) => {
     event.preventDefault();
 
-    setOldPassword(document.getElementById("oldPassword").value);
-    setNewPassword(document.getElementById("newPassword").value);
-    setConfirmPassword(document.getElementById("confirmNewPassword").value);
-
-    if (!(userData.password === document.getElementById("oldPassword").value)) {
+    if (oldPassword === "" || newPassword === "" || confirmPassword === "") {
+      alert("Do not leave field blank");
+      return;
+    } else if (oldPassword !== userPass) {
       alert("Wrong old password, please enter again!");
       return;
-    } else if (document.getElementById("newPassword").value == "") {
-      alert("New password cannot be empty!");
-      return;
-    } else if (document.getElementById("confirmNewPassword").value == "") {
-      alert("Confirm new password cannot be empty!");
-      return;
-    } else if (
-      !(
-        document.getElementById("newPassword").value ===
-        document.getElementById("confirmNewPassword").value
-      )
-    ) {
+    } else if (newPassword !== confirmPassword) {
       alert("New password is not matched, please enter again!");
       return;
-    } else if (
-      document.getElementById("newPassword").value ===
-      document.getElementById("oldPassword").value
-    ) {
+    } else if (confirmPassword === userPass) {
       alert("New password cannot be same as old password!");
+      return;
     } else {
-      document.getElementById("oldPassword").value = "";
-      document.getElementById("newPassword").value = "";
-      document.getElementById("confirmNewPassword").value = "";
+      const requestData = {
+        user_password: newPassword,
+      };
 
-      alert("New password is set");
+      try {
+        const response = await fetch(
+          `http://localhost:8080/users/updatePassword/${user?.user_id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+          }
+        );
+
+        if (response.ok) {
+          alert("New password is set");
+          setUserPass(oldPassword);
+          setOldPassword("");
+          setNewPassword("");
+          setConfirmPassword("");
+        }
+      } catch (error) {
+        console.error("Error changing password: ", error);
+        alert("An error occurred while changing password");
+      }
     }
-  };
-
-  const setPlaceHolder = () => {
-    document.getElementById("username-name").placeholder = userData.username;
-    document.getElementById("location").placeholder = userData.location;
-    document.getElementById("job").placeholder = userData.job;
   };
 
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUSerData = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await axios.get("/profiledata.json");
-        const data = response.data;
-        const filterUser = data.filter(
-          (user) => user.email === session.user.email
+        const response = await fetch(
+          `http://localhost:8080/users/${user?.user_id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
-        setUserData(filterUser[0]);
+
+        if (response.ok) {
+          const data = await response.json();
+          setUsername(data[0]?.username);
+          setEmail(data[0]?.user_email);
+          setProfilePic(data[0]?.user_image);
+          setUserPass(data[0]?.user_password);
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
-    fetchUSerData();
-    setPlaceHolder();
-  });
+    fetchUserData();
+  }, [user?.user_id]);
 
   return (
     <Layout>
@@ -163,6 +147,18 @@ export default function SettingsChangePasswordPage() {
             <FeedbackIcon className="mr-[10px]" fontSize="medium" />
             FEEDBACK
           </Button>
+          <Button
+            onClick={() => {
+              router.push("./deleteAccount");
+            }}
+            className="mr-auto navigationButton"
+            variant="text"
+            size="small"
+            fullWidth
+          >
+            <DeleteForever className="mr-[10px]" fontSize="medium" />
+            DELETE ACCOUNT
+          </Button>
         </Box>
         <Divider
           orientation="vertical"
@@ -172,44 +168,24 @@ export default function SettingsChangePasswordPage() {
         />
         <Box id="rightBox" className="flex">
           <Box id="imageBox" position="relative" display="inline-block">
-            <Avatar
-              src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
-              variant="square"
-              sx={{ width: 210, height: 210 }}
-            />
+            {profilePic && (
+              <Avatar
+                src={convertBufferToBase64(profilePic)}
+                variant="square"
+                sx={{ width: 210, height: 210 }}
+              />
+            )}
           </Box>
           <Box id="profileBox" className="flex-col">
             <Box id="profileDetailContainerBox">
               <Box className="profileDetailsBox" display="flex">
                 <Typography className="details">USERNAME:</Typography>
-                <input
-                  disabled
-                  id="username-name"
-                  type="text"
-                  name="username-name"
-                  className="detailsInput"
-                ></input>
-              </Box>
-              <Box className="profileDetailsBox" display="flex">
-                <Typography className="details">LOCATION:</Typography>
-                <input
-                  disabled
-                  id="location"
-                  type="text"
-                  name="location"
-                  className="detailsInput"
-                ></input>
+                <input disabled className="detailsInput" value={username} />
               </Box>
 
-              <Box className="profileDetailsBox" display="flex">
-                <Typography className="details">JOB:</Typography>
-                <input
-                  disabled
-                  id="job"
-                  type="text"
-                  name="job"
-                  className="detailsInput"
-                ></input>
+              <Box className="profileDetailsBox mb-[50px]" display="flex">
+                <Typography className="details">EMAIL:</Typography>
+                <input disabled className="detailsInput" value={email} />
               </Box>
             </Box>
 
@@ -218,29 +194,32 @@ export default function SettingsChangePasswordPage() {
                 *CURRENT PASSWORD
               </Typography>
               <input
-                id="oldPassword"
                 type="password"
                 className="password"
                 size={50}
                 required
-              ></input>
+                value={oldPassword}
+                onChange={(event) => setOldPassword(event.target.value)}
+              />
               <Typography className="passwordLabel">*NEW PASSWORD</Typography>
               <input
-                id="newPassword"
                 type="password"
                 className="password"
                 size={50}
                 required
-              ></input>
+                value={newPassword}
+                onChange={(event) => setNewPassword(event.target.value)}
+              />
               <Typography className="passwordLabel">
                 *CONFIRM NEW PASSWORD
               </Typography>
               <input
-                id="confirmNewPassword"
                 type="password"
                 className="password"
                 size={50}
                 required
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
               ></input>
               <Button
                 onClick={handleOnClick}
