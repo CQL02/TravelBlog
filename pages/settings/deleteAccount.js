@@ -1,51 +1,62 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useRouter } from "next/router";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import FeedbackIcon from "@mui/icons-material/Feedback";
-
 import Layout from "../../component/Layout";
+import { Avatar } from "@mui/material";
+import { UserContext } from "@/component/auth";
 import { DeleteForever } from "@mui/icons-material";
 
-export default function SettingsFeedbackPage() {
-  const [feedback, setFeedback] = useState("");
-  const [email, setEmail] = useState("");
-
-  const handleFeedbackChange = (event) => {
-    setFeedback(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    //Send data to database
-    alert("Your feedback is successfully sent!");
-    console.log("Email is" + email);
-    console.log("Feedback is " + feedback);
-    setFeedback("");
-    setEmail("");
-  };
-
+export default function SettingsChangePasswordPage() {
+  const { user, logoutUser } = useContext(UserContext);
   const router = useRouter();
+
+  const handleOnClick = async () => {
+    try {
+      const response1 = await fetch(
+        `http://localhost:8080/auth/delete/${user?.user_id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const response2 = await fetch(
+        `http://localhost:8080/auth/deleteDesc/${user?.user_id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response1.ok && response2.ok) {
+        alert("Account deleted successfully");
+        logoutUser();
+        router.push("/login");
+      } else {
+        alert("Failed to delete account");
+      }
+    } catch (error) {
+      console.error("Error Deleting account: ", error);
+      alert("An error occurred while deleting account");
+    }
+  };
+
+  const showAlert = () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete your account?"
+    );
+    if (confirmDelete) {
+      handleOnClick();
+    }
+  };
 
   return (
     <Layout>
-      <Box
-        sx={{
-          display: "flex",
-          minWidth: 230,
-          maxWidth: "fit-content",
-        }}
-      >
+      <Box className="flex min-w-[230px] max-w-fit">
         <Box
           sx={{
             display: "flex",
@@ -78,7 +89,9 @@ export default function SettingsFeedbackPage() {
             CHANGE PASSWORD
           </Button>
           <Button
-            disabled
+            onClick={() => {
+              router.push("./feedback");
+            }}
             className="mr-auto navigationButton"
             variant="text"
             size="small"
@@ -88,9 +101,7 @@ export default function SettingsFeedbackPage() {
             FEEDBACK
           </Button>
           <Button
-            onClick={() => {
-              router.push("./deleteAccount");
-            }}
+            disabled
             className="mr-auto navigationButton"
             variant="text"
             size="small"
@@ -106,37 +117,25 @@ export default function SettingsFeedbackPage() {
           variant="middle"
           color="black"
         />
-        <Box id="feedbackBox">
-          <Typography id="emailTitle">EMAIL:</Typography>
-          <input
-            id="emailInput"
-            type="text"
-            size={98}
-            value={email}
-            onChange={handleEmailChange}
-          ></input>
-          <Typography id="problemTitle">PROBLEMS FACED:</Typography>
-          <textarea
-            id="textarea"
-            rows={8}
-            cols={100}
-            value={feedback}
-            onChange={handleFeedbackChange}
-          ></textarea>
-          <Box>
-            <Button
-              id="submitButton"
-              variant="contained"
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-            <Typography id="contactUs">
-              CONTACT US AT: <br />
-              xxx@gmail.com <br />
-              +60 123456789
+        <Box id="rightBox" className="flex">
+          <div className="flex-col m-[20px]">
+            <Typography className="font-bold text-2xl">
+              Delete Account
             </Typography>
-          </Box>
+            <Typography className="text-base">
+              Are you sure you want to delete your account?
+            </Typography>
+            <Typography className="text-base text-red-700 mt-[10px] font-semibold">
+              DANGER ZONE!
+            </Typography>
+            <Button
+              size="small"
+              className="bg-red-100 hover:bg-red-200 text-red-900"
+              onClick={showAlert}
+            >
+              DELETE ACCOUNT
+            </Button>
+          </div>
         </Box>
       </Box>
     </Layout>
