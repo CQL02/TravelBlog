@@ -32,7 +32,14 @@ export default function SettingsChangePasswordPage() {
         }
       );
 
-      if (response1.ok && response2.ok) {
+      const response3 = await fetch(
+        `http://localhost:8080/auth/deleteAll/${user?.user_id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response1.ok && response2.ok && response3.ok) {
         alert("Account deleted successfully");
         logoutUser();
         router.push("/login");

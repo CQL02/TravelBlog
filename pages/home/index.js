@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import Layout from "../../component/Layout";
 import BlogListView from "@/component/BlogListView";
 import { Box, Typography } from "@mui/material";
@@ -7,7 +7,6 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import PersonIcon from "@mui/icons-material/Person";
 import Link from "next/link";
-import { UserContext } from "@/component/auth";
 
 export default function homeindex() {
   const [data, setData] = useState([]);
@@ -104,7 +103,7 @@ export default function homeindex() {
                   </Typography>
                   <Typography className="search-country-helper-text">
                     <StarRateIcon className="search-country-icon" />
-                    {topView.average_rating + " "}
+                    {parseFloat(topView.average_rating).toFixed(1) + " "}
                   </Typography>
                 </Box>
               </Box>
@@ -126,6 +125,7 @@ export default function homeindex() {
           like={data.total_likes}
           view={data.total_views}
           rating={data.average_rating}
+          owner_id={data.user_id}
         />
       ))}
     </Layout>
