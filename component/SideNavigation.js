@@ -18,6 +18,7 @@ import { useState, useContext } from "react";
 import { Close } from "@mui/icons-material";
 import { UserContext } from "./auth";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function SideNavigation() {
   const router = useRouter();
@@ -33,6 +34,13 @@ export default function SideNavigation() {
     router.push("/login");
   };
 
+  useEffect(() => {
+    // Check if the user is null
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user]);
+
   return (
     <Box>
       <IconButton className="headerButton" size="small" onClick={toggleDrawer}>
@@ -45,16 +53,20 @@ export default function SideNavigation() {
         >
           <Close />
         </IconButton>
-        <Typography className="drawer-text" align="center">
-          WELCOME!
-        </Typography>
-        <Avatar
-          src="https://e1.pxfuel.com/desktop-wallpaper/903/679/desktop-wallpaper-97-aesthetic-best-profile-pic-for-instagram-for-boy-instagram-dp-boys.jpg"
-          variant="square"
-          sx={{ width: 250, height: 250 }}
-        />
-        {user && (
+        <div className="drawer-border">
           <Typography className="drawer-text" align="center">
+            WELCOME
+          </Typography>
+          <Typography className="drawer-text-3" align="center">
+            to
+          </Typography>
+          <Typography className="drawer-text" align="center">
+            TRAVEL NOW!
+          </Typography>
+        </div>
+
+        {user && (
+          <Typography className="drawer-text-2" align="center">
             {user.username}
           </Typography>
         )}

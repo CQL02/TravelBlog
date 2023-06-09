@@ -31,7 +31,28 @@
 .drawer-text {
   font-size: x-large;
   margin-top: 10px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+.drawer-text-2 {
+  font-size: xx-large;
+  margin-top: 20px;
+  font-weight: bolder;
   margin-bottom: 10px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+.drawer-text-3 {
+  font-size: large;
+  margin-top: 10px;
+}
+
+.drawer-border {
+  margin-top: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 5px solid black;
+  padding-top: 10px;
+  padding-bottom: 30px;
 }
 
 .footer {

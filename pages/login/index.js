@@ -37,10 +37,12 @@ export default function MainPage() {
       if (response.ok) {
         const data = await response.json();
         if (data[0].user_id !== undefined) {
-          const user = { user_id: data[0].user_id, username: username };
+          const user = {
+            user_id: data[0].user_id,
+            username: username,
+          };
           localStorage.setItem("user", JSON.stringify(user));
           loginUser(user);
-          console.log(user);
           router.push("/home");
         }
       } else {

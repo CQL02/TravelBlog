@@ -43,8 +43,6 @@ export default function bloglistview(props) {
 
   const areUSureDelete = (choose) => {
     if (choose) {
-      //suppose to call api
-      // onDelete(id);
       handleDialog("", false);
     } else {
       handleDialog("", false);
@@ -108,7 +106,7 @@ export default function bloglistview(props) {
               </Typography>
               <Typography className="search-country-helper-text">
                 <StarRateIcon className="search-country-icon" />
-                {rating + " "}
+                {parseFloat(rating).toFixed(1) + " "}
               </Typography>
             </Box>
           </Box>

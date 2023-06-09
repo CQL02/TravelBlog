@@ -16,7 +16,6 @@ const UserProvider = ({ children }) => {
   const loginUser = (userData) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
-    console.log("user stored: " + JSON.stringify(userData));
   };
 
   const logoutUser = () => {
