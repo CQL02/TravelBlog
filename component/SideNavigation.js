@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Avatar,
   Box,
   Drawer,
   IconButton,
@@ -23,6 +22,17 @@ import { useEffect } from "react";
 export default function SideNavigation() {
   const router = useRouter();
   const { user, logoutUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push("/login");
+    }
+  }, [user, loading]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   const [state, setState] = useState(false);
   const toggleDrawer = () => {
@@ -34,12 +44,15 @@ export default function SideNavigation() {
     router.push("/login");
   };
 
-  useEffect(() => {
-    // Check if the user is null
-    if (!user) {
-      router.push("/login");
-    }
-  }, [user]);
+  const handleCreateBlog = () => {
+    router.push("/create");
+    setState(false);
+  };
+
+  const handleSettings = () => {
+    router.push("/settings");
+    setState(false);
+  };
 
   return (
     <Box>
@@ -72,14 +85,14 @@ export default function SideNavigation() {
         )}
         <Box className="drawer">
           <List>
-            <ListItemButton href="/create">
+            <ListItemButton onClick={handleCreateBlog}>
               <ListItemIcon>
                 <AddCircleOutlineIcon />
               </ListItemIcon>
               <ListItemText primary="Create Blog" />
             </ListItemButton>
 
-            <ListItemButton href="/settings">
+            <ListItemButton onClick={handleSettings}>
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
