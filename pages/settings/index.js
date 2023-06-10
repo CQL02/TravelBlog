@@ -1,19 +1,15 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
-import Image from "next/image";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
-
 import Layout from "../../component/Layout";
 import { Avatar } from "@mui/material";
 import { UserContext } from "@/component/auth";
@@ -21,8 +17,7 @@ import { DeleteForever } from "@mui/icons-material";
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { user } = useContext(UserContext);
-  const [loading, setLoading] = useState(true);
+  const { user, loginUser } = useContext(UserContext);
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -33,8 +28,11 @@ export default function SettingsPage() {
   const [skills, setSkills] = useState("");
   const [countryTravelled, setCountryTravelled] = useState("");
 
-  const [profilePic, setProfilePic] = useState("");
-  const fileInputRef = useRef(null);
+  const [profilePic, setProfilePic] = useState(
+    "/images/default_profile_pic.jpg"
+  );
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const convertBufferToBase64 = (buffer) => {
     const base64String = Buffer.from(buffer).toString("base64");
@@ -43,7 +41,6 @@ export default function SettingsPage() {
 
   const handleUploadClick = (event) => {
     const file = event?.target?.files?.[0];
-
     if (file) {
       const reader = new FileReader();
 
@@ -51,32 +48,49 @@ export default function SettingsPage() {
         setProfilePic(reader.result);
       });
 
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-
-      reader.addEventListener("load", () => {
-        setProfilePic(reader.result);
-      });
-
-      reader.readAsDataURL(file);
+      reader.readAsArrayBuffer(file);
     }
   };
 
   const handleOnClick = async (event) => {
     event.preventDefault();
 
-    const imageData = profilePic.data;
-    const imageBuffer = Buffer.from(imageData);
-    const imageType = profilePic.type;
-    const imageFileName = "profile_image";
-    const imageFile = new File([imageBuffer], imageFileName, {
-      type: imageType,
+    try {
+      const checkUser = await fetch(
+        `http://localhost:8080/users/checkUsername/${username}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (checkUser.ok) {
+        const data = await checkUser.json();
+        if (data.length > 0) {
+          if (data[0]?.username === user?.username) {
+            setErrorMessage("");
+            sendUpdateData();
+          } else {
+            setErrorMessage("Username taken");
+          }
+        } else {
+          setErrorMessage("");
+          sendUpdateData();
+        }
+      } else {
+        alert("Failed to check username");
+      }
+    } catch (error) {
+      console.error("Error checking username: ", error);
+      alert("An error occurred while checking username");
+    }
+  };
+
+  const sendUpdateData = async () => {
+    const blob = new Blob([profilePic], { type: "image/jpeg" });
+    const imageFile = new File([blob], "profile_pic.jpg", {
+      type: "image/jpeg",
     });
 
     const formData1 = new FormData();
@@ -89,7 +103,11 @@ export default function SettingsPage() {
     formData2.append("phone", phone);
     formData2.append("instagram", instagram);
     formData2.append("country_travelled", countryTravelled);
-    formData2.append("yoe", yoe);
+    if (yoe === "") {
+      formData2.append("yoe", 0);
+    } else {
+      formData2.append("yoe", yoe);
+    }
     formData2.append("skills", skills);
 
     try {
@@ -109,7 +127,6 @@ export default function SettingsPage() {
         }
       );
 
-      console.log(formData2.toString());
       if (response1.ok && response2.ok) {
         alert("Successfully Update");
         setUsername(username);
@@ -121,6 +138,11 @@ export default function SettingsPage() {
         setSkills(skills);
         setYoe(yoe);
         setCountryTravelled(countryTravelled);
+
+        loginUser({
+          user_id: user?.user_id,
+          username: username,
+        });
       } else {
         alert("Failed to update post");
       }
@@ -147,7 +169,7 @@ export default function SettingsPage() {
           const data = await response.json();
           setUsername(data[0]?.username);
           setEmail(data[0]?.user_email);
-          setProfilePic(data[0]?.user_image);
+          setProfilePic(Buffer.from(data[0]?.user_image, "hex").buffer);
         }
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -253,7 +275,7 @@ export default function SettingsPage() {
                 component="label"
               >
                 <input
-                  onChange={handleFileChange}
+                  onChange={handleUploadClick}
                   hidden
                   accept="image/*"
                   type="file"
@@ -274,6 +296,7 @@ export default function SettingsPage() {
                   value={username}
                 ></input>
               </Box>
+              {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
               <Box className="profileDetailsBox" display="flex">
                 <Typography className="details">LOCATION:</Typography>

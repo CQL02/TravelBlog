@@ -7,7 +7,6 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    // console.log(JSON.parse(storedUser));
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }

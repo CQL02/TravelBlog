@@ -15,6 +15,7 @@ export default function RegisterAccount() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage2, setErrorMessage2] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const handleEyeChange = (event) => {
@@ -29,6 +30,34 @@ export default function RegisterAccount() {
   const handleOnClick = async (event) => {
     event.preventDefault();
 
+    try {
+      const checkUser = await fetch(
+        `http://localhost:8080/users/checkUsername/${username}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (checkUser.ok) {
+        const data = await checkUser.json();
+        if (data.length > 0) {
+          setErrorMessage2("Username taken");
+        } else {
+          setErrorMessage2("");
+          handleRegister();
+        }
+      } else {
+        alert("Failed to check username");
+      }
+    } catch (error) {
+      console.error("Error checking username: ", error);
+      alert("An error occurred while checking username");
+    }
+  };
+
+  const handleRegister = async () => {
     if (!username || !email || !password || !confirmPassword) {
       setErrorMessage("Please do not leave field empty!");
       return;
@@ -97,6 +126,7 @@ export default function RegisterAccount() {
                 onChange={(event) => setUsername(event.target.value)}
               />
             </div>
+            {errorMessage2 && <p className="text-red-500">{errorMessage2}</p>}
 
             <div className="flex flex-col items-center m-5">
               <div className="bg-gray-100 w-96 p-2 flex items-center rounded-2xl">

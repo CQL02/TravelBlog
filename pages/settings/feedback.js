@@ -14,25 +14,37 @@ import { DeleteForever } from "@mui/icons-material";
 
 export default function SettingsFeedbackPage() {
   const [feedback, setFeedback] = useState("");
-  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleFeedbackChange = (event) => {
-    setFeedback(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    //Send data to database
-    alert("Your feedback is successfully sent!");
-    console.log("Email is" + email);
-    console.log("Feedback is " + feedback);
-    setFeedback("");
-    setEmail("");
+    if (!feedback || !subject) {
+      setErrorMessage("Do not leave field empty!");
+      return;
+    } else {
+      try {
+        const response = await fetch("http://localhost:8080/email/send-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ subject: subject, text: feedback }),
+        });
+
+        if (response.ok) {
+          setErrorMessage("");
+          setFeedback("");
+          setSubject("");
+          alert("Your feedback is successfully sent!");
+        } else {
+          console.error("Failed to send verification email");
+        }
+      } catch (error) {
+        console.error("Error sending verification email:", error);
+      }
+    }
   };
 
   const router = useRouter();
@@ -107,13 +119,13 @@ export default function SettingsFeedbackPage() {
           color="black"
         />
         <Box id="feedbackBox">
-          <Typography id="emailTitle">EMAIL:</Typography>
+          <Typography id="emailTitle">SUBJECT:</Typography>
           <input
             id="emailInput"
             type="text"
             size={98}
-            value={email}
-            onChange={handleEmailChange}
+            value={subject}
+            onChange={(event) => setSubject(event.target.value)}
           ></input>
           <Typography id="problemTitle">PROBLEMS FACED:</Typography>
           <textarea
@@ -121,8 +133,9 @@ export default function SettingsFeedbackPage() {
             rows={8}
             cols={100}
             value={feedback}
-            onChange={handleFeedbackChange}
+            onChange={(event) => setFeedback(event.target.value)}
           ></textarea>
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           <Box>
             <Button
               id="submitButton"
@@ -133,8 +146,7 @@ export default function SettingsFeedbackPage() {
             </Button>
             <Typography id="contactUs">
               CONTACT US AT: <br />
-              xxx@gmail.com <br />
-              +60 123456789
+              travelnow@gmail.com <br />
             </Typography>
           </Box>
         </Box>
