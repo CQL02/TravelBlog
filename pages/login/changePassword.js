@@ -6,6 +6,7 @@ import { useState } from "react";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useRouter } from "next/router";
+import apiUrl from '../api/apiConfig'
 
 export default function ChangePasswordPage() {
   const router = useRouter();
@@ -39,7 +40,7 @@ export default function ChangePasswordPage() {
 
       try {
         const response = await fetch(
-          `http://localhost:8080/users/updatePassword/${user_id}`,
+          `${apiUrl}/users/updatePassword/${user_id}`,
           {
             method: "PUT",
             headers: {

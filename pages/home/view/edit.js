@@ -12,6 +12,7 @@ import {
 import { useState, useRef, useEffect } from "react";
 import ImageIcon from "@mui/icons-material/Image";
 import { useRouter } from "next/router";
+import apiUrl from '../../api/apiConfig'
 
 const countries = [
   "Antarctica",
@@ -49,7 +50,7 @@ export default function CreateIndex() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/view/post/${id}`, {
+        const response = await fetch(`${apiUrl}/view/post/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -160,7 +161,7 @@ export default function CreateIndex() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/view/posts/update/${id}`,
+        `${apiUrl}/view/posts/update/${id}`,
         {
           method: "PUT",
           body: formData,

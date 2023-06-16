@@ -11,6 +11,7 @@ import FeedbackIcon from "@mui/icons-material/Feedback";
 
 import Layout from "../../component/Layout";
 import { DeleteForever } from "@mui/icons-material";
+import apiUrl from "../api/apiConfig"
 
 export default function SettingsFeedbackPage() {
   const [feedback, setFeedback] = useState("");
@@ -25,7 +26,7 @@ export default function SettingsFeedbackPage() {
       return;
     } else {
       try {
-        const response = await fetch("http://localhost:8080/email/send-email", {
+        const response = await fetch(`${apiUrl}/email/send-email`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

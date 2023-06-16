@@ -14,6 +14,7 @@ import Layout from "../../component/Layout";
 import { Avatar } from "@mui/material";
 import { UserContext } from "@/component/auth";
 import { DeleteForever } from "@mui/icons-material";
+import apiUrl from "../api/apiConfig"
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -57,7 +58,7 @@ export default function SettingsPage() {
 
     try {
       const checkUser = await fetch(
-        `http://localhost:8080/users/checkUsername/${username}`,
+        `${apiUrl}/users/checkUsername/${username}`,
         {
           method: "GET",
           headers: {
@@ -112,7 +113,7 @@ export default function SettingsPage() {
 
     try {
       const response1 = await fetch(
-        `http://localhost:8080/users/updateDetails/${user?.user_id}`,
+        `${apiUrl}/users/updateDetails/${user?.user_id}`,
         {
           method: "PUT",
           body: formData1,
@@ -120,7 +121,7 @@ export default function SettingsPage() {
       );
 
       const response2 = await fetch(
-        `http://localhost:8080/users/updateProfile/${user?.user_id}`,
+        `${apiUrl}/users/updateProfile/${user?.user_id}`,
         {
           method: "PUT",
           body: formData2,
@@ -156,7 +157,7 @@ export default function SettingsPage() {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/users/${user?.user_id}`,
+          `${apiUrl}/users/${user?.user_id}`,
           {
             method: "GET",
             headers: {
@@ -179,7 +180,7 @@ export default function SettingsPage() {
     const fetchUserDesc = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/users/desc/${user?.user_id}`,
+          `${apiUrl}/users/desc/${user?.user_id}`,
           {
             method: "GET",
             headers: {

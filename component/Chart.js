@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { Box, Rating, Typography } from "@mui/material";
 import { useContext } from "react";
 import { UserContext } from "./auth";
+import apiUrl from '../pages/api/apiConfig';
 
 ChartJS.register(
   CategoryScale,
@@ -45,7 +46,7 @@ export default function MyChart(props) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/stats/dailyStats/${user?.user_id}`,
+          `${apiUrl}/stats/dailyStats/${user?.user_id}`,
           {
             method: "GET",
             headers: {

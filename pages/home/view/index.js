@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import { Favorite } from "@mui/icons-material";
 import { useContext } from "react";
 import { UserContext } from "@/component/auth";
+import apiUrl from '../../api/apiConfig'
 
 export default function View() {
   const { user } = useContext(UserContext);
@@ -48,7 +49,7 @@ export default function View() {
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/blog/comment`, {
+      const response = await fetch(`${apiUrl}/blog/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +72,7 @@ export default function View() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/view/post/${id}`, {
+        const response = await fetch(`${apiUrl}/view/post/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -92,7 +93,7 @@ export default function View() {
     const fetchView = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/stats/checkView?post_id=${id}&user_id=${user?.user_id}`,
+          `${apiUrl}/stats/checkView?post_id=${id}&user_id=${user?.user_id}`,
           {
             method: "GET",
             headers: {
@@ -120,7 +121,7 @@ export default function View() {
     const fetchLike = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/stats/checkLike?post_id=${id}&user_id=${user?.user_id}`,
+          `${apiUrl}/stats/checkLike?post_id=${id}&user_id=${user?.user_id}`,
           {
             method: "GET",
             headers: {
@@ -166,7 +167,7 @@ export default function View() {
       owner_id: data?.user_id,
     };
     try {
-      const response = await fetch(`http://localhost:8080/stats/like`, {
+      const response = await fetch(`${apiUrl}/stats/like`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -187,7 +188,7 @@ export default function View() {
   const handleUnlike = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/stats/like?post_id=${id}&user_id=${user?.user_id}`,
+        `${apiUrl}/stats/like?post_id=${id}&user_id=${user?.user_id}`,
         {
           method: "DELETE",
         }
@@ -211,7 +212,7 @@ export default function View() {
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/stats/view`, {
+      const response = await fetch(`${apiUrl}/stats/view`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -232,7 +233,7 @@ export default function View() {
   const fetchComments = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/blog/comments/${id}`,
+        `${apiUrl}/blog/comments/${id}`,
         {
           method: "GET",
           headers: {

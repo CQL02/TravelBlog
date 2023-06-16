@@ -11,6 +11,7 @@ import Layout from "../../component/Layout";
 import { Avatar } from "@mui/material";
 import { UserContext } from "@/component/auth";
 import { DeleteForever } from "@mui/icons-material";
+import apiUrl from "../api/apiConfig"
 
 export default function SettingsChangePasswordPage() {
   const { user, logoutUser } = useContext(UserContext);
@@ -19,21 +20,21 @@ export default function SettingsChangePasswordPage() {
   const handleOnClick = async () => {
     try {
       const response1 = await fetch(
-        `http://localhost:8080/auth/delete/${user?.user_id}`,
+        `${apiUrl}/auth/delete/${user?.user_id}`,
         {
           method: "DELETE",
         }
       );
 
       const response2 = await fetch(
-        `http://localhost:8080/auth/deleteDesc/${user?.user_id}`,
+        `${apiUrl}/auth/deleteDesc/${user?.user_id}`,
         {
           method: "DELETE",
         }
       );
 
       const response3 = await fetch(
-        `http://localhost:8080/auth/deleteAll/${user?.user_id}`,
+        `${apiUrl}/auth/deleteAll/${user?.user_id}`,
         {
           method: "DELETE",
         }

@@ -7,6 +7,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import PersonIcon from "@mui/icons-material/Person";
 import Link from "next/link";
+import apiUrl from '../api/apiConfig'
 
 export default function homeindex() {
   const [data, setData] = useState([]);
@@ -20,7 +21,7 @@ export default function homeindex() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/view/home", {
+        const response = await fetch(`${apiUrl}/view/home`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -41,7 +42,7 @@ export default function homeindex() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/view/homeTop", {
+        const response = await fetch(`${apiUrl}/view/homeTop`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import BlogListView from "@/component/BlogListView";
 import { useRouter } from "next/router";
 import { UserContext } from "@/component/auth";
+import apiUrl from '../api/apiConfig'
 
 export default function ViewPostsPage() {
   const { user } = useContext(UserContext);
@@ -22,7 +23,7 @@ export default function ViewPostsPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/users/${userid}`, {
+        const response = await fetch(`${apiUrl}/users/${userid}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -41,7 +42,7 @@ export default function ViewPostsPage() {
     const fetchPosts = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/view/post/user/${userid}`,
+          `${apiUrl}/view/post/user/${userid}`,
           {
             method: "GET",
             headers: {
