@@ -12,7 +12,7 @@ import {
 import { useState, useRef, useEffect } from "react";
 import ImageIcon from "@mui/icons-material/Image";
 import { useRouter } from "next/router";
-import apiUrl from '../../api/apiConfig'
+import apiUrl from "../../api/apiConfig";
 
 const countries = [
   "Antarctica",
@@ -160,13 +160,10 @@ export default function CreateIndex() {
     }
 
     try {
-      const response = await fetch(
-        `${apiUrl}/view/posts/update/${id}`,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${apiUrl}/view/posts/update/${id}`, {
+        method: "PUT",
+        body: formData,
+      });
 
       if (response.ok) {
         alert("Post updated successfully");

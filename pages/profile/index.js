@@ -14,7 +14,7 @@ import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "@/component/auth";
 import { useRouter } from "next/router";
-import apiUrl from "../api/apiConfig"
+import apiUrl from "../api/apiConfig";
 
 export default function FirstProfilePage() {
   const { user } = useContext(UserContext);
@@ -51,15 +51,12 @@ export default function FirstProfilePage() {
 
     const fetchUserDesc = async () => {
       try {
-        const response = await fetch(
-          `${apiUrl}/users/desc/${userid}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${apiUrl}/users/desc/${userid}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -72,20 +69,16 @@ export default function FirstProfilePage() {
 
     const fetchAvgRating = async () => {
       try {
-        const response = await fetch(
-          `${apiUrl}/users/review/${userid}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${apiUrl}/users/review/${userid}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.ok) {
           const data = await response.json();
-          setUserReview(data[0][0])
-
+          setUserReview(data[0][0]);
         }
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -141,9 +134,9 @@ export default function FirstProfilePage() {
                       color="textPrimary"
                       fontWeight="bold"
                     >
-                     {
-                      userReview.rating ? parseFloat(userReview.rating).toFixed(1) : 0
-                     } 
+                      {userReview.rating
+                        ? parseFloat(userReview.rating).toFixed(1)
+                        : parseFloat("0").toFixed(1)}
                     </Typography>
                     <Rating
                       name="rating"
@@ -234,7 +227,13 @@ export default function FirstProfilePage() {
 
               <Divider style={{ margin: "15px 0" }} />
 
-              <Chart overallRate={userReview.rating ? parseFloat(userReview.rating).toFixed(1) : 0} />
+              <Chart
+                overallRate={
+                  userReview.rating
+                    ? parseFloat(userReview.rating).toFixed(1)
+                    : parseFloat("0").toFixed(1)
+                }
+              />
             </>
           ) : (
             <></>
