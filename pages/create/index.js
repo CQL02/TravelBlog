@@ -13,7 +13,7 @@ import { useState, useRef, useContext } from "react";
 import ImageIcon from "@mui/icons-material/Image";
 import { useRouter } from "next/router";
 import { UserContext } from "@/component/auth";
-import apiUrl from '../api/apiConfig'
+import apiUrl from "../api/apiConfig";
 
 const countries = [
   "Antarctica",
@@ -75,10 +75,15 @@ export default function createIndex() {
 
   function handleOpenImage() {
     if (image) {
-      const newWindow = window.open();
-      newWindow.document.write(
-        `<img src="${image}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`
-      );
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64Data = event.target.result;
+        const newWindow = window.open();
+        newWindow.document.write(
+          `<img src="${base64Data}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`
+        );
+      };
+      reader.readAsDataURL(image);
     }
   }
 
@@ -88,6 +93,10 @@ export default function createIndex() {
   }
 
   const onPostClick = async () => {
+    if (!getTitle || !image || getDescription || !getSelectedCountry) {
+      alert("Do not leave field blank!");
+      return;
+    }
     const fd = new FormData();
     fd.append("user_id", user?.user_id);
     fd.append("title", getTitle);

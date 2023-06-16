@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { UserContext } from "@/component/auth";
 import { useContext } from "react";
-import apiUrl from '../api/apiConfig'
+import apiUrl from "../api/apiConfig";
 
 export default function MainPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,15 +25,13 @@ export default function MainPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(
-        `${apiUrl}/auth/login?username=${username}&user_password=${password}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${apiUrl}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: username, user_password: password }),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -41,6 +39,7 @@ export default function MainPage() {
           const user = {
             user_id: data[0].user_id,
             username: username,
+            user_password: data[0].user_password,
           };
           localStorage.setItem("user", JSON.stringify(user));
           loginUser(user);

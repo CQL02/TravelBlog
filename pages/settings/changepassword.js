@@ -11,10 +11,10 @@ import Layout from "../../component/Layout";
 import { Avatar } from "@mui/material";
 import { UserContext } from "@/component/auth";
 import { DeleteForever } from "@mui/icons-material";
-import apiUrl from "../api/apiConfig"
+import apiUrl from "../api/apiConfig";
 
 export default function SettingsChangePasswordPage() {
-  const { user } = useContext(UserContext);
+  const { user, loginUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [profilePic, setProfilePic] = useState("");
@@ -67,6 +67,11 @@ export default function SettingsChangePasswordPage() {
           setOldPassword("");
           setNewPassword("");
           setConfirmPassword("");
+          loginUser({
+            user_id: user?.user_id,
+            username: username,
+            user_password: newPassword,
+          });
         }
       } catch (error) {
         console.error("Error changing password: ", error);
@@ -80,29 +85,26 @@ export default function SettingsChangePasswordPage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(
-          `${apiUrl}/users/${user?.user_id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${apiUrl}/users/${user?.user_id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.ok) {
           const data = await response.json();
           setUsername(data[0]?.username);
           setEmail(data[0]?.user_email);
           setProfilePic(data[0]?.user_image);
-          setUserPass(data[0]?.user_password);
+          setUserPass(user?.user_password);
         }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
     fetchUserData();
-  }, [user?.user_id]);
+  }, [user?.user_id, user?.user_password]);
 
   return (
     <Layout>
