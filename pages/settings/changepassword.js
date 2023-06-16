@@ -11,6 +11,7 @@ import Layout from "../../component/Layout";
 import { Avatar } from "@mui/material";
 import { UserContext } from "@/component/auth";
 import { DeleteForever } from "@mui/icons-material";
+import apiUrl from "../api/apiConfig"
 
 export default function SettingsChangePasswordPage() {
   const { user } = useContext(UserContext);
@@ -50,7 +51,7 @@ export default function SettingsChangePasswordPage() {
 
       try {
         const response = await fetch(
-          `http://localhost:8080/users/updatePassword/${user?.user_id}`,
+          `${apiUrl}/users/updatePassword/${user?.user_id}`,
           {
             method: "PUT",
             headers: {
@@ -80,7 +81,7 @@ export default function SettingsChangePasswordPage() {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/users/${user?.user_id}`,
+          `${apiUrl}/users/${user?.user_id}`,
           {
             method: "GET",
             headers: {

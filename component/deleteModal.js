@@ -1,4 +1,5 @@
 import { useState } from "react";
+import apiUrl from '../pages/api/apiConfig';
 
 function Dialog({ message, onDialog, post_id }) {
   const [loading, setLoading] = useState(false);
@@ -7,7 +8,7 @@ function Dialog({ message, onDialog, post_id }) {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:8080/view/post/delete/${post_id}`,
+        `${apiUrl}/view/post/delete/${post_id}`,
         {
           method: "DELETE",
         }

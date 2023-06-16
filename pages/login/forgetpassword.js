@@ -5,6 +5,7 @@ import { Divider } from "@mui/material";
 import { Person } from "@mui/icons-material";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import apiUrl from "../api/apiConfig";
 
 export default function ForgetPasswordPage() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function ForgetPasswordPage() {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/email/send-verification-email",
+          `${apiUrl}/email/send-verification-email`,
           {
             method: "POST",
             headers: {
@@ -55,7 +56,7 @@ export default function ForgetPasswordPage() {
   const handleVerifyOTP = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/auth/check-email-username",
+        `${apiUrl}/auth/check-email-username`,
         {
           method: "POST",
           headers: {
@@ -90,7 +91,7 @@ export default function ForgetPasswordPage() {
     setDisableVerificationButton(true);
 
     const timer = setInterval(() => {
-      setVerificationButtonTimer((prevTimer) => prevTimer - 1);
+      setVerificationButtonTimer((prevTimer) => prevTimer - 1);S
     }, 1000);
 
     setTimeout(() => {

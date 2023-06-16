@@ -13,6 +13,7 @@ import { useState, useRef, useContext } from "react";
 import ImageIcon from "@mui/icons-material/Image";
 import { useRouter } from "next/router";
 import { UserContext } from "@/component/auth";
+import apiUrl from '../api/apiConfig'
 
 const countries = [
   "Antarctica",
@@ -95,7 +96,7 @@ export default function createIndex() {
     fd.append("country", getSelectedCountry);
 
     try {
-      const response = await fetch("http://localhost:8080/view/add", {
+      const response = await fetch(`${apiUrl}/view/add`, {
         method: "POST",
         body: fd,
       });

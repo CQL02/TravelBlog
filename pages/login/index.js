@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { UserContext } from "@/component/auth";
 import { useContext } from "react";
+import apiUrl from '../api/apiConfig'
 
 export default function MainPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +26,7 @@ export default function MainPage() {
     event.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:8080/auth/login?username=${username}&user_password=${password}`,
+        `${apiUrl}/auth/login?username=${username}&user_password=${password}`,
         {
           method: "GET",
           headers: {

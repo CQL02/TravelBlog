@@ -5,6 +5,7 @@ import Layout from "../../component/Layout";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import BlogListView from "@/component/BlogListView";
+import apiUrl from '../api/apiConfig'
 
 export default function SearchCountry() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function SearchCountry() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/view/post/search/${search}`,
+          `${apiUrl}/view/post/search/${search}`,
           {
             method: "GET",
             headers: {

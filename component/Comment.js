@@ -3,6 +3,7 @@ import StarRateIcon from "@mui/icons-material/StarRate";
 import { Delete } from "@mui/icons-material";
 import { useContext } from "react";
 import { UserContext } from "./auth";
+import apiUrl from '../pages/api/apiConfig';
 
 export default function Comment(props) {
   const { id, user_id, image, username, date, rating, comment } = props;
@@ -13,7 +14,7 @@ export default function Comment(props) {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/blog/delComment/${id}`,
+        `${apiUrl}/blog/delComment/${id}`,
         {
           method: "DELETE",
         }

@@ -7,6 +7,7 @@ import { IconButton } from "@mui/material";
 import { useState } from "react";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useRouter } from "next/router";
+import apiUrl from "../api/apiConfig"
 
 export default function RegisterAccount() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function RegisterAccount() {
 
     try {
       const checkUser = await fetch(
-        `http://localhost:8080/users/checkUsername/${username}`,
+        `${apiUrl}/users/checkUsername/${username}`,
         {
           method: "GET",
           headers: {
@@ -82,7 +83,7 @@ export default function RegisterAccount() {
       fd.append("user_image", file);
 
       try {
-        const response = await fetch(`http://localhost:8080/auth/register`, {
+        const response = await fetch(`${apiUrl}/auth/register`, {
           method: "POST",
           body: fd,
         });

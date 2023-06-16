@@ -6,6 +6,7 @@ import axios from "axios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import BlogListView from "@/component/BlogListView";
+import apiUrl from "../api/apiConfig"
 
 export default function searchcountry() {
   const router = useRouter();
@@ -16,7 +17,7 @@ export default function searchcountry() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/view/post/country/${country}`,
+          `${apiUrl}/view/post/country/${country}`,
           {
             method: "GET",
             headers: {
