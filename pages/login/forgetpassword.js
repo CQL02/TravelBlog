@@ -91,7 +91,7 @@ export default function ForgetPasswordPage() {
     setDisableVerificationButton(true);
 
     const timer = setInterval(() => {
-      setVerificationButtonTimer((prevTimer) => prevTimer - 1);S
+      setVerificationButtonTimer((prevTimer) => prevTimer - 1);
     }, 1000);
 
     setTimeout(() => {

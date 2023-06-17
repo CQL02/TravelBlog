@@ -93,7 +93,7 @@ export default function createIndex() {
   }
 
   const onPostClick = async () => {
-    if (!getTitle || !image || getDescription || !getSelectedCountry) {
+    if (!getTitle || !image || !getDescription || !getSelectedCountry) {
       alert("Do not leave field blank!");
       return;
     }
