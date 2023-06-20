@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { Favorite } from "@mui/icons-material";
 import { useContext } from "react";
 import { UserContext } from "@/component/auth";
-import apiUrl from '../../api/apiConfig'
+import apiUrl from "../../api/apiConfig";
 
 export default function View() {
   const { user } = useContext(UserContext);
@@ -26,7 +26,7 @@ export default function View() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [like, setLike] = useState("");
-  const [view, setView] = useState(false);
+  const [view, setView] = useState(100);
 
   const convertBufferToBase64 = (buffer) => {
     const base64String = Buffer.from(buffer).toString("base64");
@@ -90,6 +90,10 @@ export default function View() {
       }
     };
 
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
     const fetchView = async () => {
       try {
         const response = await fetch(
@@ -105,11 +109,7 @@ export default function View() {
         if (response.ok) {
           const data = await response.json();
           const count = parseInt(data[0].count);
-          if (count === 1) {
-            setView(true);
-          } else {
-            setView(false);
-          }
+          setView(count);
         } else {
           console.error("Failed to fetch view. Status:", response.status);
         }
@@ -118,6 +118,10 @@ export default function View() {
       }
     };
 
+    fetchView();
+  }, [id, user?.user_id]);
+
+  useEffect(() => {
     const fetchLike = async () => {
       try {
         const response = await fetch(
@@ -144,9 +148,7 @@ export default function View() {
       }
     };
 
-    fetchData();
     fetchLike();
-    fetchView();
   }, [id, user?.user_id]);
 
   useEffect(() => {
@@ -154,11 +156,13 @@ export default function View() {
   }, [id]);
 
   useEffect(() => {
-    if (data?.user_id && !view) {
+    console.log(view);
+    if (view === 0 && data?.user_id) {
+      console.log("add view");
       sendPostView();
       return;
     }
-  }, [view, data]);
+  }, [data?.user_id]);
 
   const handleLike = async () => {
     const postLike = {
@@ -221,7 +225,7 @@ export default function View() {
       });
 
       if (response.ok) {
-        setView(true);
+        setView(1);
       } else {
         console.error("Failed to send post view. Status:", response.status);
       }
@@ -232,15 +236,12 @@ export default function View() {
 
   const fetchComments = async () => {
     try {
-      const response = await fetch(
-        `${apiUrl}/blog/comments/${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${apiUrl}/blog/comments/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.ok) {
         const data = await response.json();
