@@ -14,7 +14,7 @@ import Layout from "../../component/Layout";
 import { Avatar } from "@mui/material";
 import { UserContext } from "@/component/auth";
 import { DeleteForever } from "@mui/icons-material";
-import apiUrl from "../api/apiConfig"
+import apiUrl from "../api/apiConfig";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -143,6 +143,7 @@ export default function SettingsPage() {
         loginUser({
           user_id: user?.user_id,
           username: username,
+          user_password: user?.user_password,
         });
       } else {
         alert("Failed to update post");
@@ -156,15 +157,12 @@ export default function SettingsPage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(
-          `${apiUrl}/users/${user?.user_id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${apiUrl}/users/${user?.user_id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -179,15 +177,12 @@ export default function SettingsPage() {
 
     const fetchUserDesc = async () => {
       try {
-        const response = await fetch(
-          `${apiUrl}/users/desc/${user?.user_id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${apiUrl}/users/desc/${user?.user_id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.ok) {
           const data = await response.json();
