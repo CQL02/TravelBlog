@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { Box, Rating, Typography } from "@mui/material";
 import { useContext } from "react";
 import { UserContext } from "./auth";
-import apiUrl from '../pages/api/apiConfig';
+import apiUrl from "../pages/api/apiConfig";
 
 ChartJS.register(
   CategoryScale,
@@ -150,7 +150,7 @@ export default function MyChart(props) {
             <Rating
               name="rating"
               value={parseFloat(overallRate)}
-              precision={0.5}
+              precision={0.1}
               readOnly
               style={{ marginLeft: "8px", color: "#AED2E4" }}
             />
