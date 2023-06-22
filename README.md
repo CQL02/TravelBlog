@@ -1,3 +1,4 @@
+# Travel Blog Frontend - TRAVEL NOW
 ## Collaborators
 1. Chung Qi Lin
 2. Cheong Jin Xuan
