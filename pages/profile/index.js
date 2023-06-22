@@ -142,7 +142,7 @@ export default function FirstProfilePage() {
                       name="rating"
                       size="large"
                       value={parseFloat(userReview.rating)}
-                      precision={0.5}
+                      precision={0.1}
                       readOnly
                       style={{ marginLeft: "8px", color: "#AED2E4" }}
                     />
